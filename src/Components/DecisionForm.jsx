@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { UserPersona, ProblemArea, Level, DecisionGoal } from '../types.js';
+import { UserPersona, ProblemArea, Level, DecisionGoal } from '../../types.js';
 import { THEME, PERSONA_DESCRIPTIONS } from '../constants.jsx';
 import { MapPin, Target, Settings, Briefcase, HelpCircle } from 'lucide-react';
 
