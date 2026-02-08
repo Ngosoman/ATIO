@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Layout from './components/Layout.jsx';
 import DecisionForm from './components/DecisionForm.jsx';
 import DecisionResults from './components/DecisionResults.jsx';
-import { generateRecommendations } from './services/geminiService.js';
+import { generateRecommendations } from '../services/geminiService.js';
 import { Info, Sprout, Search } from 'lucide-react';
 import { THEME } from './constants.jsx';
 
