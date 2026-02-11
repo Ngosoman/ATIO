@@ -103,7 +103,8 @@ import Dashboard from './components/Dashboard';
 import DocumentGrid from './components/DocumentGrid';
 import ChatInterface from './components/ChatInterface';
 import KnowledgeGraph from './components/KnowledgeGraph';
-import { NavSection } from './types';
+import Settings from './components/Settings';
+import { NavSection } from '../types';
 
 const App = () => {
   const [activeSection, setActiveSection] = useState(NavSection.Dashboard);
@@ -118,6 +119,8 @@ const App = () => {
         return <ChatInterface />;
       case NavSection.Graph:
         return <KnowledgeGraph />;
+      case NavSection.Settings:
+        return <Settings />;
       default:
         return <div className="p-8 text-slate-500 font-medium">Coming soon...</div>;
     }
