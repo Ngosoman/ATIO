@@ -97,14 +97,14 @@
 
 
 import React, { useState } from 'react';
-import Sidebar from './components/Sidebar';
-import TopBar from './components/TopBar';
-import Dashboard from './components/Dashboard';
-import DocumentGrid from './components/DocumentGrid';
-import ChatInterface from './components/ChatInterface';
-import KnowledgeGraph from './components/KnowledgeGraph';
-import Settings from './components/Settings';
-import { NavSection } from '../types';
+import Sidebar from './components/Sidebar.jsx';
+import TopBar from './components/TopBar.jsx';
+import Dashboard from './components/Dashboard.jsx';
+import DocumentGrid from './components/DocumentGrid.jsx';
+import ChatInterface from './components/ChatInterface.jsx';
+import KnowledgeGraph from './components/KnowledgeGraph.jsx';
+import Settings from './components/Settings.jsx';
+import { NavSection } from '../types.js';
 
 const App = () => {
   const [activeSection, setActiveSection] = useState(NavSection.Dashboard);

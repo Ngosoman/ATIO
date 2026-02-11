@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Leaf, Menu } from 'lucide-react';
-import { THEME } from '../constants';
+import { THEME } from '../constants.jsx';
 
 const Layout = ({ children }) => {
   return (

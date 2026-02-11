@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { NavSection } from '../../types';
+import { NavSection } from '../../types.js';
 
 const Sidebar = ({ activeSection, onNavChange }) => {
   const navItems = [

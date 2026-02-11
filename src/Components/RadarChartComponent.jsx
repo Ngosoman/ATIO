@@ -7,7 +7,7 @@ import {
   PolarAngleAxis,
   ResponsiveContainer,
 } from 'recharts';
-import { THEME } from '../Constants.jsx';
+import { THEME } from '../constants.jsx';
 
 const RadarChartComponent = ({ scores }) => {
   const data = [
