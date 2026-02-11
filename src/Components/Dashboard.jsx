@@ -32,7 +32,7 @@ const Dashboard = () => {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <StatCard title="Indexed Files" value="1,284" icon="📂" trend="+12.5%" trendType="up" />
         <StatCard title="AI Intelligence" value="98.2%" icon="✨" trend="+2.4%" trendType="up" />
         <StatCard title="Active Users" value="24" icon="👥" trend="-1.2%" trendType="down" />

@@ -39,7 +39,7 @@ const DocumentGrid = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {documents.map((doc) => (
           <div key={doc.id} className="bg-white border border-slate-200 p-5 rounded-2xl hover:border-indigo-300 hover:shadow-lg transition-all group cursor-pointer">
             <div className="flex justify-between items-start mb-4">
