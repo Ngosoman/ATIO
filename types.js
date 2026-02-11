@@ -27,3 +27,11 @@ export const DecisionGoal = {
   INFORM_POLICY: "Inform policy",
   TRAINING: "Training & extension"
 };
+
+export const NavSection = Object.freeze({
+  Dashboard: 'Dashboard',
+  Documents: 'Documents',
+  Assistant: 'Assistant',
+  Graph: 'Knowledge Graph',
+  Settings: 'Settings'
+});
