@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { gemini } from '../services/geminiService';
+import { gemini } from '../services/geminiService.js';
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState([

@@ -51,7 +51,7 @@ const Dashboard = () => {
               <button className="px-4 py-1.5 text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors">Month</button>
             </div>
           </div>
-          <div className="h-72 w-full relative z-10">
+          <div style={{height: '288px', width: '100%'}} className="relative z-10">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data}>
                 <defs>
