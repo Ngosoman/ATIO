@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SysLink Chat Widget</title>
+  <link rel="stylesheet" href="widget.css" />
+</head>
+<body>
+  <!-- Chat Bubble Button -->
+  <button id="syslink-chat-btn" aria-label="Open chat">💬</button>
+
+  <!-- Chat Window -->
+  <div id="syslink-chat-window" class="hidden">
+    <div id="syslink-chat-header">
+      <div class="header-left">
+        <img id="syslink-bot-logo" src="bot-logo.png" alt="Bot logo" />
+        <div>
+          <div id="syslink-bot-name">SysLink Assistant</div>
+          <div id="syslink-bot-status">Online</div>
+        </div>
+      </div>
+      <button id="syslink-close-btn" aria-label="Close chat">✖</button>
+    </div>
+
+    <div id="syslink-chat-body">
+      <div id="syslink-messages"></div>
+    </div>
+
+    <div id="syslink-suggestions" class="suggestions"></div>
+
+    <div id="syslink-chat-input">
+      <input id="syslink-text" type="text" placeholder="Type your message..." />
+      <button id="syslink-send">Send</button>
+    </div>
+  </div>
+
+  <script src="widget.js"></script>
+</body>
+</html>
