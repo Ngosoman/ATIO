@@ -147,7 +147,7 @@
 
 
 import React, { useState } from 'react';
-import { Persona } from './types.js';
+import { Persona } from '../types.js';
 import { Landing } from './pages/Landing.jsx';
 import { FarmerDashboard } from './pages/FarmerDashboard.jsx';
 import { ResearcherDashboard } from './pages/ResearcherDashboard.jsx';
