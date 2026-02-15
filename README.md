@@ -50,42 +50,6 @@ The platform leverages the Google Gemini API and advanced data visualization to 
 
 ---
 
-## 🚀 Installation & Setup
-
-### Prerequisites
-- Node.js (v18+)
-- npm or yarn
-
-### Clone & Install
-```bash
-git clone <repository-url>
-cd ATIO
-npm install
-```
-
-### Environment Configuration
-Create a `.env` file in the project root:
-```bash
-VITE_GEMINI_API_KEY=your_gemini_api_key_here
-```
-
-### Development Server
-```bash
-npm run dev
-```
-The application will be available at `http://localhost:5173`
-
-### Build for Production
-```bash
-npm run build
-```
-
-### Lint & Preview
-```bash
-npm run lint
-npm run preview
-```
-
 ---
 
 ## 🛠️ Tech Stack
