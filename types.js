@@ -35,3 +35,10 @@ export const NavSection = Object.freeze({
   Graph: 'Knowledge Graph',
   Settings: 'Settings'
 });
+
+export const Persona = {
+  FARMER: 'farmer',
+  RESEARCHER: 'researcher',
+  POLICYMAKER: 'policymaker',
+  GUEST: 'guest'
+};
