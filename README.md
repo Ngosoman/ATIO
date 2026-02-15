@@ -67,7 +67,7 @@ The platform leverages the Google Gemini API and advanced data visualization to 
 
 ---
 
-## 📁 Project Structure
+<!-- ## 📁 Project Structure
 
 ```
 ATIO/
@@ -110,7 +110,7 @@ ATIO/
 └── package.json                     # Dependencies & scripts
 ```
 
----
+--- -->
 
 ## 📌 Hackathon Scope & Limitations
 
@@ -161,7 +161,7 @@ This project is developed for **educational and hackathon purposes**. It is not 
 
 ---
 
-## 🎯 Getting Started
+<!-- ## 🎯 Getting Started
 
 1. **Clone the repository** and install dependencies
 2. **Configure your Gemini API key** in the `.env` file
@@ -169,7 +169,7 @@ This project is developed for **educational and hackathon purposes**. It is not 
 4. **Explore** the different persona dashboards
 5. **Test** the AI chatbot with various food systems queries
 
----
+--- -->
 
 ## 📧 Support & Feedback
 
