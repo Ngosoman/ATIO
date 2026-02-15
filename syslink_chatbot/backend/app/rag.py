@@ -1,12 +1,11 @@
-# backend/app/rag.py
 import os
 import pickle
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Optional, Tuple
 
 import numpy as np
 import faiss
-import requests
 from sentence_transformers import SentenceTransformer
+from huggingface_hub import InferenceClient
 
 from .config import (
     FAISS_INDEX_PATH,
@@ -14,176 +13,174 @@ from .config import (
     EMBED_MODEL_NAME,
     MIN_TOP_SCORE,
     WEB_MAX_RESULTS,
-    OLLAMA_BASE_URL,
-    OLLAMA_MODEL,
+    HF_TOKEN,
+    HF_MODEL,
 )
 from .fetcher import fetch_page_text
 from .web_search import web_search
 
 
-class RAGEngine:
+class RAGEngineHF:
     def __init__(self):
-        if not os.path.exists(FAISS_INDEX_PATH) or not os.path.exists(DOCSTORE_PATH):
-            raise FileNotFoundError(
-                "Missing FAISS index/docs. Run ingestion first: python -m app.ingest"
-            )
-
         self.embedder = SentenceTransformer(EMBED_MODEL_NAME)
-        self.index = faiss.read_index(FAISS_INDEX_PATH)
 
+        # Load FAISS index + docs
+        self.index = faiss.read_index(FAISS_INDEX_PATH)
         with open(DOCSTORE_PATH, "rb") as f:
             self.docs: List[Dict] = pickle.load(f)
 
-        # Tunings for speed
-        self.TOP_K = 5
-        self.MAX_CONTEXT_CHARS_PER_DOC = 2000  # keep prompt small -> faster
-        self.MAX_WEB_PAGES = WEB_MAX_RESULTS
+        # Prefer config values; give safe default model if empty
+        model_name = (HF_MODEL or "google/gemma-2-2b-it").strip()
+        token = (HF_TOKEN or "").strip()
 
-    # ---------- Retrieval ----------
+        self.client = InferenceClient(model=model_name, token=token)
+
+        self.TOP_K = 5
+        self.MAX_CONTEXT_CHARS_PER_DOC = 1800
+
     def retrieve_local(self, query: str, k: int = 5) -> List[Dict]:
         q_emb = self.embedder.encode([query], normalize_embeddings=True)
         q_emb = np.array(q_emb, dtype="float32")
-
         scores, ids = self.index.search(q_emb, k)
 
-        results = []
+        out: List[Dict] = []
         for rank, doc_id in enumerate(ids[0]):
             if doc_id == -1:
                 continue
             d = self.docs[int(doc_id)]
-            results.append({
-                "rank": rank + 1,
-                "score": float(scores[0][rank]),
-                "text": d["text"],
-                "meta": d["meta"],
-            })
-        return results
+            out.append(
+                {
+                    "rank": rank + 1,
+                    "score": float(scores[0][rank]),
+                    "text": d.get("text", ""),
+                    "meta": d.get("meta", {}),
+                }
+            )
+        return out
 
     def _needs_web_fallback(self, contexts: List[Dict]) -> bool:
-        if not contexts:
-            return True
-        return contexts[0]["score"] < MIN_TOP_SCORE
+        return (not contexts) or (contexts[0]["score"] < MIN_TOP_SCORE)
 
-    # ---------- Web fallback ----------
     def fetch_web_context(self, query: str) -> Tuple[List[Dict], List[Dict]]:
         """
-        Search web and fetch a few pages. Returns (contexts, sources).
+        Optional fallback: uses web_search() -> fetch_page_text().
+        web_search() should return [] when rate-limited, so this won't crash.
         """
-        # Prefer your key domain first (still "web", but targeted)
-        queries = [
-            f"site:foodsystemsdashboard.org {query}",
-            query,
-        ]
-
+        queries = [f"site:foodsystemsdashboard.org {query}", query]
         links: List[Dict] = []
         seen = set()
 
         for q in queries:
-            for r in web_search(q, max_results=self.MAX_WEB_PAGES):
-                if r["url"] not in seen:
+            for r in web_search(q, max_results=WEB_MAX_RESULTS):
+                url = r.get("url")
+                if url and url not in seen:
                     links.append(r)
-                    seen.add(r["url"])
-            if len(links) >= self.MAX_WEB_PAGES:
+                    seen.add(url)
+            if len(links) >= WEB_MAX_RESULTS:
                 break
 
-        contexts = []
-        sources = []
+        contexts: List[Dict] = []
+        sources: List[Dict] = []
 
-        for r in links[: self.MAX_WEB_PAGES]:
+        for r in links[:WEB_MAX_RESULTS]:
             try:
                 page = fetch_page_text(r["url"], use_cache=True)
-                contexts.append({
-                    "rank": len(contexts) + 1,
-                    "score": 0.0,
-                    "text": page["text"],
-                    "meta": {"url": page["url"], "title": page["title"], "chunk": 0},
-                })
-                sources.append({"title": page["title"], "url": page["url"]})
+                contexts.append(
+                    {
+                        "rank": len(contexts) + 1,
+                        "score": 0.0,
+                        "text": page.get("text", ""),
+                        "meta": {
+                            "url": page.get("url", r["url"]),
+                            "title": page.get("title", r.get("title", "Source")),
+                            "chunk": 0,
+                        },
+                    }
+                )
+                sources.append(
+                    {
+                        "title": page.get("title", r.get("title", "Source")),
+                        "url": page.get("url", r["url"]),
+                    }
+                )
             except Exception:
                 continue
 
         return contexts, sources
 
-    # ---------- Ollama generation ----------
-    def _ollama_generate(self, prompt: str) -> str:
-        """
-        Calls local Ollama (FREE).
-        """
-        payload = {
-            "model": OLLAMA_MODEL,
-            "prompt": prompt,
-            "stream": False,
-        }
-        resp = requests.post(f"{OLLAMA_BASE_URL}/api/generate", json=payload, timeout=120)
-        resp.raise_for_status()
-        data = resp.json()
-        return (data.get("response") or "").strip()
-
-    # ---------- Public: answer ----------
     def answer(self, query: str, preferred_lang: Optional[str] = None) -> Dict:
-        local_contexts = self.retrieve_local(query, k=self.TOP_K)
-
+        local = self.retrieve_local(query, k=self.TOP_K)
         used = "local"
-        contexts = local_contexts
-        sources = self._unique_sources_from_local(local_contexts)
+        contexts = local
+        sources = self._unique_sources(local)
 
-        # If local is weak -> web fallback
-        if self._needs_web_fallback(local_contexts):
-            web_contexts, web_sources = self.fetch_web_context(query)
-            if web_contexts:
+        # Web fallback only if local seems weak
+        if self._needs_web_fallback(local):
+            web_ctx, web_src = self.fetch_web_context(query)
+            if web_ctx:
                 used = "web"
-                contexts = web_contexts
-                sources = web_sources
+                contexts = web_ctx
+                sources = web_src
 
-        # Build compact context for speed
         context_block = "\n\n".join(
             [
-                f"[{i+1}] {c['meta']['title']}\n{c['text'][: self.MAX_CONTEXT_CHARS_PER_DOC]}"
+                f"[{i+1}] {c.get('meta', {}).get('title', 'Source')}\n{c.get('text', '')[:self.MAX_CONTEXT_CHARS_PER_DOC]}"
                 for i, c in enumerate(contexts)
             ]
         )
 
-        lang_line = ""
-        if preferred_lang:
-            lang_line = f"\n- Respond in this language: {preferred_lang}\n"
+        lang_line = f"Respond in {preferred_lang}.\n" if preferred_lang else ""
 
         prompt = f"""
-You are a helpful assistant for "SysLink Food System".
-RULES:
-- Answer ONLY using the context below. Do not invent facts.
-- Use simple language and a MEDIUM length response (about 8–14 lines).
-- If the context is not enough, say what is missing and what page/type of info is needed.
+You are the SysLink Food System assistant.
+you can Answer using the information given BELOW if not GET from Web
+Write in simple, clear language.
+Keep responses MEDIUM length (10-20 lines).
+If information is missing, say what is missing.
 {lang_line}
-QUESTION:
-{query}
-
-CONTEXT:
+QUESTION: {query}
+INFORMATION:
 {context_block}
-
-Now write the answer:
+ANSWER:
 """.strip()
 
-        answer_text = self._ollama_generate(prompt)
+        # If token missing, we can still try public inference,
+        # but failures are common; return a helpful message.
+        token = (HF_TOKEN or "").strip()
+        if not token:
+            return {
+                "answer": "I’m running without an HF_TOKEN right now, so the AI response may fail. Please add HF_TOKEN in Space Settings → Secrets, then retry.",
+                "sources": sources,
+                "used": used,
+            }
 
-        # Safety: if model returns empty, fallback message
-        if not answer_text:
-            answer_text = (
-                "I couldn’t generate a reliable answer from the available information. "
-                "Please rephrase your question or provide more details."
+        # Try chat completion (works for conversational providers)
+        try:
+            messages = [
+                {"role": "system", "content": "You are the SysLink Food System assistant."},
+                {"role": "user", "content": prompt},
+            ]
+            resp = self.client.chat_completion(
+                messages=messages,
+                max_tokens=250,
+                temperature=0.2,
             )
+            out = (resp.choices[0].message.content or "").strip()
+        except Exception as e:
+            # Fallback: return a visible error message (so you can debug)
+            out = f"Model error: {str(e)}"
 
-        return {
-            "answer": answer_text,
-            "sources": sources,
-            "used": used,
-        }
+        if not out:
+            out = "I couldn’t generate an answer right now. Please try again."
 
-    def _unique_sources_from_local(self, contexts: List[Dict]) -> List[Dict]:
-        seen = set()
-        out = []
+        return {"answer": out, "sources": sources, "used": used}
+
+    def _unique_sources(self, contexts: List[Dict]) -> List[Dict]:
+        seen, out = set(), []
         for c in contexts:
-            u = c["meta"]["url"]
-            if u not in seen:
-                out.append({"title": c["meta"]["title"], "url": u})
+            meta = c.get("meta", {})
+            u = meta.get("url")
+            if u and u not in seen:
+                out.append({"title": meta.get("title", "Source"), "url": u})
                 seen.add(u)
         return out

@@ -1,23 +1,24 @@
 from __future__ import annotations
-from typing import Dict, List, Optional
-import re
-from .email_service import send_contact_email
 
+from typing import Dict, List
+import re
+
+from .email_service import send_contact_email
 from .suggestions import (
     default_suggestions,
     suggestions_for_intent,
     suggestions_from_text,
 )
 
+
 class FlowManager:
     """
     Manages lightweight session state for:
     - Contact flow (collect message + email)
-    - Language flow (choose language/region)
+    - Language flow (ask region -> ask language)
     """
 
     def __init__(self):
-        # session_id -> state
         self.sessions: Dict[str, Dict] = {}
 
     # ---------- Suggestions ----------
@@ -28,20 +29,21 @@ class FlowManager:
     def _get(self, session_id: str) -> Dict:
         if session_id not in self.sessions:
             self.sessions[session_id] = {
-                "mode": "normal",          # normal | contact_wait_msg | contact_wait_email | lang_wait
+                "mode": "normal",  # normal | contact_wait_msg | contact_wait_email | lang_wait_region | lang_wait_language
                 "contact_msg": None,
-                "lang": None,              # e.g. "Sinhala", "Tamil", "English"
+                "lang": None,      # preferred language (string), e.g. "Sinhala"
+                "region": None,    # store region (string) if provided
             }
         return self.sessions[session_id]
 
     # ---------- Intents ----------
     def _detect_intents(self, text: str) -> List[str]:
-        t = text.lower()
+        t = (text or "").lower()
 
-        intents = []
+        intents: List[str] = []
         if any(k in t for k in ["contact", "support", "help desk", "reach", "email us", "contact us"]):
             intents.append("contact")
-        if any(k in t for k in ["language", "sinhala", "tamil", "english", "change language", "translate"]):
+        if any(k in t for k in ["change response language", "change language", "language", "switch language", "translate"]):
             intents.append("language")
         if any(k in t for k in ["service", "services", "what do you do", "features", "what is syslink", "about"]):
             intents.append("services")
@@ -55,44 +57,46 @@ class FlowManager:
         {
           "action": "flow" | "rag",
           "answer": "...",
-          "suggestions": [...]
+          "suggestions": [...],
           "lang": optional preferred language for RAG
         }
         """
         state = self._get(session_id)
-        msg = user_message.strip()
+        msg = (user_message or "").strip()
 
-        # 1) If we're in the middle of a flow, handle it first
+        # 1) In-flow handling first
         if state["mode"].startswith("contact_"):
             return self._handle_contact_flow(state, msg)
 
-        if state["mode"] == "lang_wait":
+        if state["mode"].startswith("lang_"):
             return self._handle_language_flow(state, msg)
 
-        # 2) Not in a flow: detect intent(s)
+        # 2) Detect intent(s)
         intents = self._detect_intents(msg)
 
-        # If user typed custom prompt, we replace suggestions with new related ones
+        # If user typed a custom prompt, provide new related suggestions
         dynamic_suggestions = suggestions_from_text(msg)
 
-        # 3) Multi-intent handling (2+ in one message)
-        # We'll handle flow intents first, then allow RAG for remaining.
+        # 3) Multi-intent handling
+        # If user asks "contact + language" together, do language first, then contact
         if "contact" in intents and "language" in intents:
-            # Ask language first (quick), then contact
-            state["mode"] = "lang_wait"
+            state["mode"] = "lang_wait_region"
+            state["next_after_lang"] = "contact"
             return {
                 "action": "flow",
-                "answer": "Sure. Which language would you like (Sinhala / Tamil / English)?",
-                "suggestions": suggestions_for_intent("language"),
+                "answer": "Sure — first, tell me your region/country.",
+                "suggestions": [],
                 "lang": state.get("lang"),
             }
 
+        # 4) Single intent handling
         if "language" in intents:
-            state["mode"] = "lang_wait"
+            state["mode"] = "lang_wait_region"
+            state["next_after_lang"] = None
             return {
                 "action": "flow",
-                "answer": "Sure. Which language would you like (Sinhala / Tamil / English)?",
-                "suggestions": suggestions_for_intent("language"),
+                "answer": "Sure — tell me your region/country.",
+                "suggestions": [],
                 "lang": state.get("lang"),
             }
 
@@ -106,7 +110,6 @@ class FlowManager:
             }
 
         if "services" in intents:
-            # Let RAG answer, but provide service-related suggestions
             return {
                 "action": "rag",
                 "answer": "",
@@ -114,7 +117,7 @@ class FlowManager:
                 "lang": state.get("lang"),
             }
 
-        # 4) Default: RAG
+        # 5) Default: RAG
         return {
             "action": "rag",
             "answer": "",
@@ -143,7 +146,6 @@ class FlowManager:
                     "lang": state.get("lang"),
                 }
 
-            # Send email (free SMTP). If not configured, we still store and confirm.
             email = msg
             message = state.get("contact_msg") or ""
 
@@ -153,7 +155,7 @@ class FlowManager:
             state["mode"] = "normal"
             state["contact_msg"] = None
 
-            if result["ok"]:
+            if result.get("ok"):
                 return {
                     "action": "flow",
                     "answer": "✅ Sent! Thanks — our team will contact you soon.",
@@ -175,48 +177,54 @@ class FlowManager:
         state["mode"] = "normal"
         return {"action": "rag", "answer": "", "suggestions": default_suggestions(), "lang": state.get("lang")}
 
-    def submit_contact(self, session_id: str, email: str, message: str) -> Dict:
-        """
-        Optional endpoint use.
-        """
-        state = self._get(session_id)
-        result = send_contact_email(user_email=email, user_message=message)
-        if result["ok"]:
-            return {"ok": True, "message": "Sent"}
-        return {"ok": False, "message": "Not configured"}
-
     def _is_valid_email(self, s: str) -> bool:
-        return bool(re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", s.strip()))
+        return bool(re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", (s or "").strip()))
 
-    # ---------- Language flow ----------
+    # ---------- Language flow (NO mapping) ----------
     def _handle_language_flow(self, state: Dict, msg: str) -> Dict:
-        t = msg.strip().lower()
+        # Step 1: ask region
+        if state["mode"] == "lang_wait_region":
+            state["region"] = msg
+            state["mode"] = "lang_wait_language"
+            return {
+                "action": "flow",
+                "answer": "Thanks. What language would you like me to respond in? (Type it, e.g., Sinhala / Tamil / English)",
+                "suggestions": ["Sinhala", "Tamil", "English"],
+                "lang": state.get("lang"),
+            }
 
-        # Accept direct language choice
-        if "sinhala" in t or t in ["si", "sinhala", "sin"]:
-            state["lang"] = "Sinhala"
-        elif "tamil" in t or t in ["ta", "tamil"]:
-            state["lang"] = "Tamil"
-        elif "english" in t or t in ["en", "english"]:
-            state["lang"] = "English"
-        else:
-            # Accept region words -> map quickly
-            # (You can expand this later)
-            if any(k in t for k in ["sri lanka", "colombo", "kandy", "galle", "jaffna"]):
-                state["lang"] = "Sinhala"
-            else:
+        # Step 2: set language
+        if state["mode"] == "lang_wait_language":
+            chosen = (msg or "").strip()
+            if not chosen:
                 return {
                     "action": "flow",
-                    "answer": "Please type the language you want: Sinhala / Tamil / English.",
-                    "suggestions": suggestions_for_intent("language"),
+                    "answer": "Please type the language you want (example: Sinhala / Tamil / English).",
+                    "suggestions": ["Sinhala", "Tamil", "English"],
                     "lang": state.get("lang"),
                 }
 
-        # Finish language flow
+            state["lang"] = chosen
+            state["mode"] = "normal"
+
+            # If user wanted contact after language, jump into contact flow
+            next_after = state.pop("next_after_lang", None)
+            if next_after == "contact":
+                state["mode"] = "contact_wait_msg"
+                return {
+                    "action": "flow",
+                    "answer": f"✅ Done. I’ll reply in {state['lang']} from now on.\nNow, please type your message for our team.",
+                    "suggestions": [],
+                    "lang": state.get("lang"),
+                }
+
+            return {
+                "action": "flow",
+                "answer": f"✅ Done. I’ll reply in {state['lang']} from now on.",
+                "suggestions": default_suggestions(),
+                "lang": state.get("lang"),
+            }
+
+        # fallback
         state["mode"] = "normal"
-        return {
-            "action": "flow",
-            "answer": f"✅ Done. I’ll reply in {state['lang']} from now on.",
-            "suggestions": default_suggestions(),
-            "lang": state.get("lang"),
-        }
+        return {"action": "rag", "answer": "", "suggestions": default_suggestions(), "lang": state.get("lang")}
