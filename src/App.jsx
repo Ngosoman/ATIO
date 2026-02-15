@@ -148,10 +148,10 @@
 
 import React, { useState } from 'react';
 import { Persona } from '../types.js';
-import { Landing } from './pages/Landing.jsx';
-import { FarmerDashboard } from './pages/FarmerDashboard.jsx';
-import { ResearcherDashboard } from './pages/ResearcherDashboard.jsx';
-import { PolicymakerDashboard } from './pages/PolicymakerDashboard.jsx';
+import { Landing } from '../pages/Landing.jsx';
+import { FarmerDashboard } from '../pages/FarmerDashboard.jsx';
+import { ResearcherDashboard } from '../pages/ResearcherDashboard.jsx';
+import { PolicymakerDashboard } from '../pages/PolicymakerDashboard.jsx';
 import { ChatWidget } from './components/chatbot/ChatWidget.jsx';
 
 const App = () => {
