@@ -2,7 +2,7 @@
 import { GoogleGenAI } from "@google/genai";
 
 export const getChatbotResponse = async (history, currentMessage, persona) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
   
   try {
     const model = 'gemini-3-flash-preview';
