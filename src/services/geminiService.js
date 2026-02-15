@@ -1,50 +1,43 @@
+
 import { GoogleGenAI } from "@google/genai";
 
-export class GeminiService {
-  constructor() {
-    // Initializing Gemini API with the API key from environment variables.
-    // this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  }
+export const getChatbotResponse = async (history, currentMessage, persona) => {
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  
+  try {
+    const model = 'gemini-3-flash-preview';
+    const systemInstruction = `
+      You are the ATIO Food Systems AI Assistant.
+      Your current user is a ${persona.toUpperCase()}.
+      Adjust your tone and complexity accordingly:
+      - Farmer: Practical, simple language, action-oriented. Focus on yield, weather, and basic market advice.
+      - Researcher: Technical, data-focused, cite FAO/ATIO data where possible. Focus on correlations and scientific rigor.
+      - Policymaker: Strategic, focused on SDGs, impact, and high-level trends. Focus on socioeconomic stability and global policy.
+      Keep answers concise and agriculture-focused.
+    `;
 
-  async chat(message, history) {
-    try {
-      const response = await this.ai.models.generateContent({
-        model: 'gemini-3-pro-preview',
-        contents: [
-          ...history.map(m => ({
-            role: m.role === 'user' ? 'user' : 'model',
-            parts: [{ text: m.content }]
-          })),
-          { role: 'user', parts: [{ text: message }] }
-        ],
-        config: {
-          tools: [{ googleSearch: {} }],
-          systemInstruction: "You are ATIO, an Advanced Technical Information Organizer. Help users organize, retrieve, and understand complex technical information from their knowledge base. Use search for current facts."
-        }
-      });
+    const chatHistory = history.map(msg => ({
+      role: msg.role === 'user' ? 'user' : 'model',
+      parts: [{ text: msg.text }]
+    }));
 
-      const text = response.text || "I'm sorry, I couldn't process that request.";
-      const sources = response.candidates?.[0]?.groundingMetadata?.groundingChunks
-        ?.map((chunk) => chunk.web?.uri)
-        .filter(Boolean);
-
-      return { text, sources };
-    } catch (error) {
-      console.error("Gemini API Error:", error);
-      throw error;
-    }
-  }
-
-  async summarizeDocument(content) {
-    const response = await this.ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: `Summarize the following technical document content: ${content}`,
+    const response = await ai.models.generateContent({
+      model,
+      contents: [
+        ...chatHistory,
+        { role: 'user', parts: [{ text: currentMessage }] }
+      ],
       config: {
-        thinkingConfig: { thinkingBudget: 0 }
+        systemInstruction,
+        temperature: 0.7,
+        topP: 0.95,
+        topK: 40,
       }
     });
-    return response.text || "Summary failed.";
-  }
-}
 
-export const gemini = new GeminiService();
+    return response.text || "I'm sorry, I couldn't generate a response.";
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    return "Connection error. Please check if your API key is active and try again.";
+  }
+};
