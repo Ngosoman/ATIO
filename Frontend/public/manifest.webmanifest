@@ -1,0 +1,16 @@
+{
+  "name": "ATIO - Advanced Technical Information Organizer",
+  "short_name": "ATIO",
+  "description": "Knowledge Engine for organizing and retrieving complex technical information",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}
