@@ -104,6 +104,7 @@ import DocumentGrid from './components/DocumentGrid.jsx';
 import ChatInterface from './components/ChatInterface.jsx';
 import KnowledgeGraph from './components/KnowledgeGraph.jsx';
 import Settings from './components/Settings.jsx';
+import FloatingChat from './components/FloatingChat.jsx';
 import { NavSection } from '../types.js';
 
 const App = () => {
@@ -129,16 +130,17 @@ const App = () => {
   return (
     <div className="flex h-screen bg-[#FDFDFE] text-slate-900 overflow-hidden font-['Inter']">
       <Sidebar activeSection={activeSection} onNavChange={setActiveSection} />
-      
+
       <main className="flex-1 flex flex-col min-w-0 bg-slate-50/40 relative">
         <TopBar activeSection={activeSection} />
-        
+
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           <div className="max-w-[1400px] mx-auto p-6 md:p-10 animate-in fade-in duration-500">
             {renderContent()}
           </div>
         </div>
       </main>
+      <FloatingChat />
     </div>
   );
 };
