@@ -129,10 +129,10 @@
 //   return (
 //     <div className="flex h-screen bg-[#FDFDFE] text-slate-900 overflow-hidden font-['Inter']">
 //       <Sidebar activeSection={activeSection} onNavChange={setActiveSection} />
-      
+
 //       <main className="flex-1 flex flex-col min-w-0 bg-slate-50/40 relative">
 //         <TopBar activeSection={activeSection} />
-        
+
 //         <div className="flex-1 overflow-y-auto custom-scrollbar">
 //           <div className="max-w-[1400px] mx-auto p-6 md:p-10 animate-in fade-in duration-500">
 //             {renderContent()}
@@ -153,6 +153,7 @@ import { FarmerDashboard } from '../pages/FarmerDashboard.jsx';
 import { ResearcherDashboard } from '../pages/ResearcherDashboard.jsx';
 import { PolicymakerDashboard } from '../pages/PolicymakerDashboard.jsx';
 import { ChatWidget } from './components/chatbot/ChatWidget.jsx';
+import { VoiceReadButton } from './components/chatbot/VoiceReadButton.jsx';
 
 const App = () => {
   const [persona, setPersona] = useState(Persona.GUEST);
@@ -195,13 +196,12 @@ const App = () => {
             { label: 'Policy Hub', icon: '📜', active: false },
             { label: 'Notifications', icon: '🔔', active: false },
           ].map((item) => (
-            <button 
+            <button
               key={item.label}
-              className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                item.active 
-                  ? 'bg-forest-green text-white shadow-lg' 
-                  : 'text-gray-500 hover:bg-gray-50'
-              }`}
+              className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium transition-all ${item.active
+                ? 'bg-forest-green text-white shadow-lg'
+                : 'text-gray-500 hover:bg-gray-50'
+                }`}
             >
               <span className="text-lg">{item.icon}</span>
               {item.label}
@@ -219,7 +219,7 @@ const App = () => {
               <p className="text-[10px] text-gray-500 capitalize">{persona}</p>
             </div>
           </div>
-          <button 
+          <button
             onClick={handleLogout}
             className="w-full text-left px-4 py-2 text-xs font-bold text-red-400 hover:text-red-600 transition-colors flex items-center gap-2 group"
           >
@@ -243,7 +243,11 @@ const App = () => {
         {renderDashboard()}
       </main>
 
-      <ChatWidget currentPersona={persona} />
+      {/* Voice Read-Aloud and Chat Widget */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+        <VoiceReadButton />
+        <ChatWidget currentPersona={persona} />
+      </div>
     </div>
   );
 };
