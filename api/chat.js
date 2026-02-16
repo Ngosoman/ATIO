@@ -13,7 +13,6 @@ export default async function handler(req, res) {
     }
 
     const { message } = req.body;
-    w
     if (!message) {
         return res.status(400).json({ error: 'Message is required' });
     }
@@ -181,6 +180,12 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error('Chat API Error:', error);
+        if (error.status === 429) {
+            return res.status(429).json({
+                error: 'Too Many Requests',
+                message: 'You have exceeded the Gemini API free tier quota. Please wait a minute and try again.'
+            });
+        }
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
