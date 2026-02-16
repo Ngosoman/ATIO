@@ -89,7 +89,7 @@ export const VoiceReadButton = () => {
     };
 
     return (
-        <div className="flex flex-col items-end gap-2 relative">
+        <div className="fixed bottom-28 right-6 z-50 flex flex-col items-end gap-2">
             {/* Error Message Tooltip */}
             {state === 'error' && errorMessage && (
                 <div className="absolute right-16 top-2 bg-red-500 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap">

@@ -105,6 +105,7 @@ import ChatInterface from './components/ChatInterface.jsx';
 import KnowledgeGraph from './components/KnowledgeGraph.jsx';
 import Settings from './components/Settings.jsx';
 import FloatingChat from './components/FloatingChat.jsx';
+import { VoiceReadButton } from './components/VoiceReadButton.jsx';
 import { NavSection } from '../types.js';
 
 const App = () => {
@@ -141,6 +142,7 @@ const App = () => {
         </div>
       </main>
       <FloatingChat />
+      <VoiceReadButton />
     </div>
   );
 };

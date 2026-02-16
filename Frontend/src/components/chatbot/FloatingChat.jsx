@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { gemini } from '../services/geminiService.js';
+import { gemini } from '../../services/geminiService.js';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 
 const FloatingChat = () => {
@@ -148,4 +148,4 @@ const FloatingChat = () => {
     );
 };
 
-export default FloatingChat;
+export { FloatingChat };
