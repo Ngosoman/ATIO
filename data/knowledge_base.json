@@ -1,0 +1,42 @@
+[
+    {
+        "id": "1",
+        "title": "Project ATIO Overview",
+        "content": "ATIO (Advanced Technical Information Organizer) is a system designed to help users organize, retrieve, and understand complex technical information. It uses AI to process documents and answer questions based on the knowledge base.",
+        "keywords": [
+            "atio",
+            "overview",
+            "ai",
+            "technical",
+            "information",
+            "organizer"
+        ]
+    },
+    {
+        "id": "2",
+        "title": "Vegetable Production Guidelines",
+        "content": "For optimal vegetable production, ensure soil pH is between 6.0 and 7.0. Regular watering and proper fertilization are essential. Rotate crops annually to prevent soil depletion and disease buildup.",
+        "keywords": [
+            "vegetable",
+            "production",
+            "soil",
+            "ph",
+            "watering",
+            "fertilization",
+            "crop rotation"
+        ]
+    },
+    {
+        "id": "3",
+        "title": "Sustainable Farming Practices",
+        "content": "Sustainable farming involves using methods that are environmentally friendly, such as cover cropping, reduced tillage, and integrated pest management (IPM). These practices help maintain soil health and biodiversity.",
+        "keywords": [
+            "sustainable",
+            "farming",
+            "cover cropping",
+            "tillage",
+            "ipm",
+            "soil health"
+        ]
+    }
+]
