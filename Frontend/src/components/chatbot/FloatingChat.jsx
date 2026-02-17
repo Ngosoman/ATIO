@@ -1,64 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { chatService } from '../../services/chatService.js';
-import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { MessageCircle, X } from 'lucide-react';
 
 
 function FloatingChat() {
     const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState([
-        {
-            id: '1',
-            role: 'assistant',
-            content: "Hi! I'm ATIO. Ask me anything about the knowledge base.",
-            timestamp: new Date()
-        }
-    ]);
 
-    const [input, setInput] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const scrollRef = useRef(null);
-
-    useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
-        }
-    }, [messages, isOpen]);
-
-    const handleSend = async () => {
-        if (!input.trim() || isLoading) return;
-
-        const userMsg = {
-            id: Date.now().toString(),
-            role: 'user',
-            content: input,
-            timestamp: new Date()
-        };
-
-        setMessages(prev => [...prev, userMsg]);
-        setInput('');
-        setIsLoading(true);
-
-        try {
-            const response = await chatService.chat(userMsg.content, messages);
-            const assistantMsg = {
-                id: (Date.now() + 1).toString(),
-                role: 'assistant',
-                content: response.text,
-                timestamp: new Date(),
-                sources: response.sources
-            };
-            setMessages(prev => [...prev, assistantMsg]);
-        } catch (error) {
-            const errorMsg = {
-                id: (Date.now() + 1).toString(),
-                role: 'assistant',
-                content: "Sorry, I couldn't connect to the server.",
-                timestamp: new Date()
-            };
-            setMessages(prev => [...prev, errorMsg]);
-        } finally {
-            setIsLoading(false);
-        }
+    const containerStyle = {
+        height: 'calc(100% - 76px)', // Adjusted for header height
+        width: '100%',
+        overflow: 'hidden'
     };
 
     return (
