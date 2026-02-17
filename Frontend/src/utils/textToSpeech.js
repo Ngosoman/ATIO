@@ -6,15 +6,12 @@ class TextToSpeechService {
         this.isSupported = 'speechSynthesis' in window;
     }
 
-
     isAvailable() {
         return this.isSupported;
     }
 
-
     getFemaleVoice() {
         const voices = this.synth.getVoices();
-
 
         const femaleVoiceNames = [
             'Google UK English Female',
@@ -29,7 +26,6 @@ class TextToSpeechService {
             'female'
         ];
 
-
         for (const name of femaleVoiceNames) {
             const voice = voices.find(v =>
                 v.name.toLowerCase().includes(name.toLowerCase())
@@ -37,22 +33,14 @@ class TextToSpeechService {
             if (voice) return voice;
         }
 
-
         const anyFemale = voices.find(v =>
             v.name.toLowerCase().includes('female')
         );
         if (anyFemale) return anyFemale;
 
-
         return voices[0] || null;
     }
 
-    /**
-     
-     * @param {string} text 
-     * @param {object} options 
-     * @returns {Promise} 
-     */
     speak(text, options = {}) {
         return new Promise((resolve, reject) => {
             if (!this.isAvailable()) {
@@ -60,23 +48,18 @@ class TextToSpeechService {
                 return;
             }
 
-
             this.stop();
 
-
             this.utterance = new SpeechSynthesisUtterance(text);
-
 
             const voice = this.getFemaleVoice();
             if (voice) {
                 this.utterance.voice = voice;
             }
 
-
             this.utterance.rate = options.rate || 0.9;
             this.utterance.pitch = options.pitch || 1.0;
             this.utterance.volume = options.volume || 1.0;
-
 
             this.utterance.onend = () => {
                 this.isPaused = false;
@@ -88,12 +71,10 @@ class TextToSpeechService {
                 reject(new Error(`Speech synthesis error: ${event.error}`));
             };
 
-
             this.synth.speak(this.utterance);
             this.isPaused = false;
         });
     }
-
 
     pause() {
         if (this.synth.speaking && !this.isPaused) {
@@ -102,7 +83,6 @@ class TextToSpeechService {
         }
     }
 
-
     resume() {
         if (this.isPaused) {
             this.synth.resume();
@@ -110,30 +90,23 @@ class TextToSpeechService {
         }
     }
 
-
     stop() {
         this.synth.cancel();
         this.isPaused = false;
         this.utterance = null;
     }
 
-
     isSpeaking() {
         return this.synth.speaking;
     }
-
 
     isPausedState() {
         return this.isPaused;
     }
 }
 
-
 export const ttsService = new TextToSpeechService();
 
-
 if ('speechSynthesis' in window) {
-    window.speechSynthesis.onvoiceschanged = () => {
-
-    };
+    window.speechSynthesis.onvoiceschanged = () => { };
 }
