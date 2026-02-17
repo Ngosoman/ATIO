@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { gemini } from '../../services/geminiService.js';
+import { chatService } from '../../services/chatService.js';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 
 const FloatingChat = () => {
@@ -12,6 +12,7 @@ const FloatingChat = () => {
             timestamp: new Date()
         }
     ]);
+
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const scrollRef = useRef(null);
@@ -37,7 +38,7 @@ const FloatingChat = () => {
         setIsLoading(true);
 
         try {
-            const response = await gemini.chat(userMsg.content, messages);
+            const response = await chatService.chat(userMsg.content, messages);
             const assistantMsg = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',

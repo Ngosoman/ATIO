@@ -12,9 +12,9 @@ export class GeminiService {
       const response = await this.ai.models.generateContent({
         model: 'gemini-3-pro-preview',
         contents: [
-          ...history.map(m => ({ 
-            role: m.role === 'user' ? 'user' : 'model', 
-            parts: [{ text: m.content }] 
+          ...history.map(m => ({
+            role: m.role === 'user' ? 'user' : 'model',
+            parts: [{ text: m.content }]
           })),
           { role: 'user', parts: [{ text: message }] }
         ],
