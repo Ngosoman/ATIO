@@ -4,12 +4,12 @@ import { ttsService } from '../../utils/textToSpeech.js';
 import { Volume2, VolumeX, AlertCircle, Play, Pause, Loader2 } from 'lucide-react';
 
 export const VoiceReadButton = () => {
-    const [state, setState] = useState('idle'); // idle, reading, paused, error
+    const [state, setState] = useState('idle');
     const [errorMessage, setErrorMessage] = useState('');
     const [isSupported, setIsSupported] = useState(true);
 
     useEffect(() => {
-        // Check browser support on mount
+
         if (!ttsService.isAvailable()) {
             setIsSupported(false);
             setErrorMessage('Voice reading not supported');
@@ -19,43 +19,43 @@ export const VoiceReadButton = () => {
     const handleClick = async () => {
         if (!isSupported) return;
 
-        // If reading, pause it
+
         if (state === 'reading') {
             ttsService.pause();
             setState('paused');
             return;
         }
 
-        // If paused, resume
+
         if (state === 'paused') {
             ttsService.resume();
             setState('reading');
             return;
         }
 
-        // If idle, start reading
+
         try {
             setState('reading');
             setErrorMessage('');
 
-            // Extract page content
+
             const content = extractPageContent();
 
             if (!content || content.length < 10) {
                 throw new Error('No readable content found');
             }
 
-            // Read the content
+
             await ttsService.speak(content);
 
-            // Finished reading
+
             setState('idle');
         } catch (error) {
             console.error('Voice reading error:', error);
             setErrorMessage('Failed to read content');
             setState('error');
 
-            // Reset error state after 3 seconds
+
             setTimeout(() => {
                 setState('idle');
                 setErrorMessage('');
@@ -69,7 +69,7 @@ export const VoiceReadButton = () => {
         setState('idle');
     };
 
-    // Don't render if not supported
+
     if (!isSupported) {
         return null;
     }
@@ -90,14 +90,14 @@ export const VoiceReadButton = () => {
 
     return (
         <div className="fixed bottom-28 right-6 z-50 flex flex-col items-end gap-2">
-            {/* Error Message Tooltip */}
+            { }
             {state === 'error' && errorMessage && (
                 <div className="absolute right-16 top-2 bg-red-500 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap">
                     {errorMessage}
                 </div>
             )}
 
-            {/* Stop button (shown when reading or paused) */}
+            { }
             {(state === 'reading' || state === 'paused') && (
                 <button
                     onClick={handleStop}
@@ -108,7 +108,7 @@ export const VoiceReadButton = () => {
                 </button>
             )}
 
-            {/* Main voice button */}
+            { }
             <button
                 onClick={handleClick}
                 disabled={!isSupported}
