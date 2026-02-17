@@ -1,10 +1,41 @@
 
 import React from 'react';
 
-const TopBar = ({ activeSection }) => {
+const TopBar = ({ activeSection, userRole }) => {
+  const roleColors = {
+    'policy-makers': 'bg-blue-100 text-blue-700',
+    'farmers': 'bg-green-100 text-green-700',
+    'researchers': 'bg-purple-100 text-purple-700',
+    'agripreneurs': 'bg-orange-100 text-orange-700',
+    'ngos': 'bg-red-100 text-red-700',
+    'youth': 'bg-pink-100 text-pink-700',
+    'contributors': 'bg-teal-100 text-teal-700',
+    'data-providers': 'bg-cyan-100 text-cyan-700'
+  };
+
+  const getRoleLabel = (roleId) => {
+    const roleLabels = {
+      'policy-makers': 'Policy Maker',
+      'farmers': 'Farmer',
+      'researchers': 'Researcher',
+      'agripreneurs': 'Agripreneur',
+      'ngos': 'NGO & Development',
+      'youth': 'Youth & Education',
+      'contributors': 'Community Contributor',
+      'data-providers': 'Data Provider'
+    };
+    return roleLabels[roleId] || 'User';
+  };
   return (
     <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0">
-      <h1 className="text-lg font-semibold text-slate-800">{activeSection}</h1>
+      <div className="flex items-center gap-4">
+        <h1 className="text-lg font-semibold text-slate-800">{activeSection}</h1>
+        {userRole && (
+          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${roleColors[userRole] || 'bg-gray-100 text-gray-700'}`}>
+            {getRoleLabel(userRole)}
+          </span>
+        )}
+      </div>
       
       <div className="flex items-center gap-4">
         <div className="relative hidden md:block">

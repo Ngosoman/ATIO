@@ -2,7 +2,20 @@
 import React from 'react';
 import { NavSection } from '../../types.js';
 
-const Sidebar = ({ activeSection, onNavChange }) => {
+const Sidebar = ({ activeSection, onNavChange, userRole, onBackToRoles }) => {
+  const getRoleLabel = (roleId) => {
+    const roleLabels = {
+      'policy-makers': 'Policy Maker',
+      'farmers': 'Farmer',
+      'researchers': 'Researcher',
+      'agripreneurs': 'Agripreneur',
+      'ngos': 'NGO & Development',
+      'youth': 'Youth & Education',
+      'contributors': 'Community Contributor',
+      'data-providers': 'Data Provider'
+    };
+    return roleLabels[roleId] || 'User';
+  };
   const navItems = [
     { id: NavSection.Dashboard, label: 'Overview', icon: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
@@ -38,10 +51,12 @@ const Sidebar = ({ activeSection, onNavChange }) => {
       <div className="px-4 mb-6">
         <button className="w-full flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-100 transition-colors group">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">HQ</div>
+            <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
+              {getRoleLabel(userRole).split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)}
+            </div>
             <div className="text-left">
-              <p className="text-xs font-bold text-slate-800 leading-none">Global Tech</p>
-              <p className="text-[10px] text-slate-400 mt-1">Workspace</p>
+              <p className="text-xs font-bold text-slate-800 leading-none">{getRoleLabel(userRole)}</p>
+              <p className="text-[10px] text-slate-400 mt-1">Current Role</p>
             </div>
           </div>
           <svg className="w-4 h-4 text-slate-400 group-hover:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
@@ -72,18 +87,17 @@ const Sidebar = ({ activeSection, onNavChange }) => {
       </nav>
 
       <div className="p-6 mt-auto border-t border-slate-100 bg-slate-50/30">
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Storage</span>
-            <span className="text-[10px] font-bold text-indigo-600">75%</span>
-          </div>
-          <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-3">
-            <div className="w-3/4 h-full bg-indigo-500 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.3)]"></div>
-          </div>
-          <button className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-lg transition-all transform active:scale-95 shadow-lg shadow-indigo-100 uppercase tracking-widest">
-            Upgrade Plan
-          </button>
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-4">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Current Role</p>
+          <p className="text-sm font-semibold text-slate-900">{getRoleLabel(userRole)}</p>
+          <p className="text-[10px] text-slate-500 mt-2">Logged in as {getRoleLabel(userRole).toLowerCase()}</p>
         </div>
+        <button 
+          onClick={onBackToRoles}
+          className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-lg transition-all transform active:scale-95 shadow-lg shadow-indigo-100 uppercase tracking-widest"
+        >
+          Change Role
+        </button>
       </div>
     </aside>
   );

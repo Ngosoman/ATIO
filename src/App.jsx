@@ -96,7 +96,7 @@
 // export default App;
 
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar.jsx';
 import TopBar from './components/TopBar.jsx';
 import Dashboard from './components/Dashboard.jsx';
@@ -105,11 +105,22 @@ import ChatInterface from './components/ChatInterface.jsx';
 import KnowledgeGraph from './components/KnowledgeGraph.jsx';
 import Settings from './components/Settings.jsx';
 import FloatingChat from './components/FloatingChat.jsx';
+import Landing from './components/Landing.jsx';
 import { VoiceReadButton } from './components/VoiceReadButton.jsx';
 import { NavSection } from '../types.js';
 
 const App = () => {
+  const [userRole, setUserRole] = useState(() => {
+    const saved = localStorage.getItem('userRole');
+    return saved || null;
+  });
   const [activeSection, setActiveSection] = useState(NavSection.Dashboard);
+  
+  useEffect(() => {
+    if (userRole) {
+      localStorage.setItem('userRole', userRole);
+    }
+  }, [userRole]);
 
   const renderContent = () => {
     switch (activeSection) {
@@ -128,12 +139,32 @@ const App = () => {
     }
   };
 
+  const handleSelectRole = (roleId) => {
+    setUserRole(roleId);
+    setActiveSection(NavSection.Dashboard);
+  };
+
+  const handleBackToRoles = () => {
+    setUserRole(null);
+    localStorage.removeItem('userRole');
+  };
+
+  // If no role selected, show landing page
+  if (!userRole) {
+    return <Landing onSelectRole={handleSelectRole} />;
+  }
+
   return (
     <div className="flex h-screen bg-[#FDFDFE] text-slate-900 overflow-hidden font-['Inter']">
-      <Sidebar activeSection={activeSection} onNavChange={setActiveSection} />
+      <Sidebar 
+        activeSection={activeSection} 
+        onNavChange={setActiveSection}
+        userRole={userRole}
+        onBackToRoles={handleBackToRoles}
+      />
 
       <main className="flex-1 flex flex-col min-w-0 bg-slate-50/40 relative">
-        <TopBar activeSection={activeSection} />
+        <TopBar activeSection={activeSection} userRole={userRole} />
 
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           <div className="max-w-[1400px] mx-auto p-6 md:p-10 animate-in fade-in duration-500">
