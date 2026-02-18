@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const ROLES = [
@@ -12,7 +11,7 @@ const ROLES = [
     active: true
   },
   {
-    id: 'farmers',
+    id: 'farmer',
     title: 'Farmers',
     description: 'Find practical solutions for your farm with simple step-by-step guides.',
     icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
@@ -57,7 +56,7 @@ const ROLES = [
     active: true
   },
   {
-    id: 'community',
+    id: 'community_contributor',
     title: 'Community Contributors',
     description: 'Share your innovations and traditional knowledge.',
     icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
@@ -66,7 +65,7 @@ const ROLES = [
     active: true
   },
   {
-    id: 'data',
+    id: 'data_provider',
     title: 'Data Providers',
     description: 'Connect your database to the knowledge base.',
     icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
@@ -76,11 +75,11 @@ const ROLES = [
   }
 ];
 
-const Home = () => {
+const Home = ({ onSelectRole }) => {
   return (
-    <div className="max-w-7xl mx-auto px-6 pt-12">
+    <div className="max-w-7xl mx-auto px-6 pt-12 pb-32">
       {/* Hero Section */}
-      <div className="text-center mb-16 animate-in fade-in slide-in-from-top-4 duration-700">
+      <div className="text-center mb-16 animate-fade-in">
         <h2 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Welcome to the ATIO Knowledge Base</h2>
         <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
           A comprehensive platform for discovering, sharing, and implementing agrifood technologies and innovations across Sub-Saharan Africa.
@@ -89,29 +88,29 @@ const Home = () => {
       </div>
 
       {/* Role Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
         {ROLES.map((role) => (
           <div 
             key={role.id}
-            className="bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full group"
+            className="bg-white rounded-[40px] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full group"
           >
             {/* Image Header */}
-            <div className="relative h-48 w-full overflow-hidden">
-              <img src={role.imageUrl} alt={role.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+            <div className="relative h-52 w-full overflow-hidden">
+              <img src={role.imageUrl} alt={role.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-black/40" />
               
               {/* Active Badge */}
               {role.active && (
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
-                   <div className="w-1.5 h-1.5 rounded-full bg-fao-teal animate-pulse" />
-                   <span className="text-[10px] font-bold text-gray-800 uppercase tracking-widest">Active</span>
+                <div className="absolute top-5 right-5 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full flex items-center gap-2 shadow-sm">
+                   <div className="w-1.5 h-1.5 rounded-full bg-[#008D96] animate-pulse" />
+                   <span className="text-[10px] font-bold text-gray-800 uppercase tracking-[1px]">Active</span>
                 </div>
               )}
 
               {/* Circular Icon */}
-              <div className="absolute -bottom-6 left-6 w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-white z-10">
-                <div className={`w-10 h-10 rounded-full ${role.color} flex items-center justify-center text-white`}>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="absolute -bottom-7 left-8 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10">
+                <div className={`w-12 h-12 rounded-full ${role.color} flex items-center justify-center text-white`}>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={role.icon} />
                   </svg>
                 </div>
@@ -119,10 +118,13 @@ const Home = () => {
             </div>
 
             {/* Content */}
-            <div className="p-6 pt-10 flex flex-col flex-1">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{role.title}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-6 flex-1">{role.description}</p>
-              <button className="w-full bg-gray-950 text-white font-bold py-3 rounded-xl hover:bg-fao-teal transition-colors text-sm">
+            <div className="p-8 pt-12 flex flex-col flex-1">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">{role.title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-8 flex-1 font-medium">{role.description}</p>
+              <button 
+                onClick={() => onSelectRole(role.id)}
+                className="w-full bg-gray-950 text-white font-bold py-4 rounded-2xl hover:bg-[#008D96] transition-colors text-sm shadow-lg active:scale-95 duration-200"
+              >
                 Get Started
               </button>
             </div>
@@ -131,32 +133,24 @@ const Home = () => {
       </div>
 
       {/* About Section */}
-      <div className="bg-white rounded-[32px] border border-gray-200 p-8 md:p-12 shadow-sm animate-in fade-in duration-1000">
-        <div className="max-w-4xl">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">About the ATIO Knowledge Base</h3>
-          <p className="text-gray-600 mb-4 leading-relaxed">
+      <div className="bg-white rounded-[48px] border border-gray-100 p-12 shadow-sm animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <h3 className="text-3xl font-extrabold text-gray-900 mb-8">About the ATIO Knowledge Base</h3>
+          <p className="text-lg text-gray-600 mb-6 leading-relaxed">
             The ATIO Knowledge Base is a federated platform that connects diverse sources of knowledge about agrifood technologies and innovations relevant to Sub-Saharan Africa.
           </p>
-          <p className="text-gray-600 mb-8 leading-relaxed">
+          <p className="text-lg text-gray-600 mb-10 leading-relaxed">
             Our goal is to make evidence-based information accessible to everyone—from policy makers crafting national strategies to farmers seeking practical solutions.
           </p>
           
-          <div className="p-4 border-t border-b border-gray-100 mb-8">
-            <p className="text-sm text-gray-400 font-medium">This is a prototype demonstration. All user roles are now fully functional.</p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4">
-            <button className="flex-1 border border-gray-200 py-3 px-6 rounded-xl font-bold text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors">
-              📊 View JSON Data Integration Demo
+          <div className="flex flex-col sm:flex-row gap-5 justify-center">
+            <button className="bg-gray-50 border border-gray-100 py-4 px-8 rounded-2xl font-bold text-gray-700 hover:bg-[#008D96] hover:text-white transition-all flex items-center justify-center gap-3">
+              📊 Data Integration Demo
             </button>
-            <button className="flex-1 border border-gray-200 py-3 px-6 rounded-xl font-bold text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors">
-              📁 Browse Data Sources Directory
+            <button className="bg-gray-50 border border-gray-100 py-4 px-8 rounded-2xl font-bold text-gray-700 hover:bg-[#008D96] hover:text-white transition-all flex items-center justify-center gap-3">
+              📁 Browse Data Sources
             </button>
           </div>
-          
-          <p className="mt-6 text-center text-xs text-gray-400 uppercase tracking-widest font-semibold">
-            Explore our data integration and trusted research sources
-          </p>
         </div>
       </div>
     </div>

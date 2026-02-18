@@ -112,24 +112,50 @@ import React, { useState } from 'react';
 import Header from './components/Header.jsx';
 import Home from './components/Home.jsx';
 import AIAssistant from './components/AiAssistant.jsx';
+import PolicymakerDashboard from '../pages/PolicymakerDashboard.jsx';
+import FarmerDashboard from '../pages/FarmerDashboard.jsx';
+import ResearcherDashboard from '../pages/ResearcherDashboard.jsx';
 
 const App = () => {
   const [showAI, setShowAI] = useState(false);
+  const [view, setView] = useState('home');
+
+  const navigateTo = (newView) => {
+    setView(newView);
+    window.scrollTo(0, 0);
+  };
+
+  const renderView = () => {
+    switch (view) {
+      case 'policy':
+        return <PolicymakerDashboard onBack={() => navigateTo('home')} />;
+      case 'farmer':
+        return <FarmerDashboard onBack={() => navigateTo('home')} />;
+      case 'researchers':
+        return <ResearcherDashboard onBack={() => navigateTo('home')} />;
+      default:
+        return <Home onSelectRole={navigateTo} />;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header />
+    <div className="min-h-screen flex flex-col">
+      {view === 'home' && <Header />}
       
-      <main className="flex-1 pb-20">
-        <Home />
+      <main className="flex-1">
+        {renderView()}
       </main>
 
+      {/* Persistent AI Assistant Toggle */}
       <button 
         onClick={() => setShowAI(!showAI)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-fao-teal text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-50"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-[#008D96] text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-50 border-4 border-white"
+        aria-label="Toggle AI Assistant"
       >
         {showAI ? (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
         ) : (
           <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12c0 1.84.5 3.55 1.36 5L2 22l5.13-1.36c1.45.86 3.16 1.36 5 1.36 5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
@@ -138,7 +164,7 @@ const App = () => {
       </button>
 
       {showAI && (
-        <div className="fixed bottom-24 right-6 w-[400px] h-[600px] bg-white rounded-3xl shadow-2xl border border-gray-200 z-50 overflow-hidden flex flex-col animate-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed bottom-24 right-6 w-[380px] h-[580px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden flex flex-col animate-fade-in">
           <AIAssistant />
         </div>
       )}
