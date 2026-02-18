@@ -42,3 +42,19 @@ export const Persona = {
   POLICYMAKER: 'policymaker',
   GUEST: 'guest'
 };
+
+
+// Types.js - Using constants for object-based enums
+
+export const NavigationTab = {
+  DASHBOARD: 'dashboard',
+  ASSIGNMENTS: 'assignments',
+  AI_ASSISTANT: 'ai_assistant',
+  RESOURCES: 'resources'
+};
+
+export const TaskStatus = {
+  TODO: 'todo',
+  IN_PROGRESS: 'in-progress',
+  COMPLETED: 'completed'
+};
