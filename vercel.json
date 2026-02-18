@@ -1,8 +1,5 @@
 {
-  "buildCommand": "cd Frontend && npm run build",
+  "buildCommand": "cd Frontend && npm install && npm run build",
   "outputDirectory": "Frontend/dist",
-  "devCommand": "cd Frontend && npm run dev",
-  "env": {
-    "GEMINI_API_KEY": "@gemini_api_key"
-  }
+  "devCommand": "cd Frontend && npm run dev"
 }
