@@ -115,6 +115,7 @@ import AIAssistant from './components/AssistantAI.jsx';
 import PolicymakerDashboard from '../pages/PolicymakerDashboard.jsx';
 import FarmerDashboard from '../pages/FarmerDashboard.jsx';
 import ResearcherDashboard from '../pages/ResearcherDashboard.jsx';
+import { VoiceReadButton } from './components/chatbot/VoiceReadButton.jsx';
 
 const App = () => {
   const [showAI, setShowAI] = useState(false);
@@ -141,13 +142,13 @@ const App = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {view === 'home' && <Header />}
-      
+
       <main className="flex-1">
         {renderView()}
       </main>
 
       {/* Persistent AI Assistant Toggle */}
-      <button 
+      <button
         onClick={() => setShowAI(!showAI)}
         className="fixed bottom-6 right-6 w-14 h-14 bg-[#008D96] text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-50 border-4 border-white"
         aria-label="Toggle AI Assistant"
@@ -158,10 +159,13 @@ const App = () => {
           </svg>
         ) : (
           <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.84.5 3.55 1.36 5L2 22l5.13-1.36c1.45.86 3.16 1.36 5 1.36 5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 1.84.5 3.55 1.36 5L2 22l5.13-1.36c1.45.86 3.16 1.36 5 1.36 5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z" />
           </svg>
         )}
       </button>
+
+      {/* Voice Reading Feature */}
+      <VoiceReadButton />
 
       {showAI && (
         <div className="fixed bottom-24 right-6 w-[380px] h-[580px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden flex flex-col animate-fade-in">
