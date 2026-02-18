@@ -111,7 +111,7 @@
 import React, { useState } from 'react';
 import Header from './components/Header.jsx';
 import Home from './components/Home.jsx';
-import AIAssistant from './components/AIAssistant.jsx';
+import AIAssistant from './components/AssistantAI.jsx';
 import PolicymakerDashboard from '../pages/PolicymakerDashboard.jsx';
 import FarmerDashboard from '../pages/FarmerDashboard.jsx';
 import ResearcherDashboard from '../pages/ResearcherDashboard.jsx';
