@@ -7,7 +7,8 @@ export const PERSONA_CONFIGS = [
     title: 'Farmer',
     description: 'Real-time crop advice, market prices, and climate smart techniques.',
     color: '#2E7D32', // Forest Green
-    icon: '🌾'
+    icon: '🌾',
+    imageUrl: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800'
   },
   {
     id: Persona.RESEARCHER,
