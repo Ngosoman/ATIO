@@ -80,7 +80,19 @@ const Home = ({ onSelectRole }) => {
   const [showDataSources, setShowDataSources] = useState(false);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 pt-12 pb-32">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      {/* Header with Logo */}
+      <header className="sticky top-0 z-40 bg-white border-b border-gray-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-700 rounded-lg flex items-center justify-center text-white text-lg font-bold shadow-md">
+            🌿
+          </div>
+          <span className="text-2xl font-black text-green-700 tracking-tight">ATIO</span>
+          <span className="text-xs text-gray-500 ml-auto">Knowledge Base</span>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-6 pt-12 pb-32">
       {/* Hero Section */}
       <div className="text-center mb-16 animate-fade-in">
         <h2 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Welcome to the ATIO Knowledge Base</h2>

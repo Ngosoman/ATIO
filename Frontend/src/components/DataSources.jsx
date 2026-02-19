@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import dataSources from '../../data/atiokb_data_sources.json';
 
 const DataSources = ({ open, onClose }) => {
@@ -8,9 +8,6 @@ const DataSources = ({ open, onClose }) => {
 
   useEffect(() => {
     if (!open) return;
-
-    setLoading(true);
-    setError(null);
 
     try {
       // Normalize the data
@@ -23,8 +20,10 @@ const DataSources = ({ open, onClose }) => {
       
       setSources(normalized);
       setLoading(false);
-    } catch (err) {
+      setError(null);
+    } catch {
       setError("Failed to load data sources");
+      setSources([]);
       setLoading(false);
     }
   }, [open]);
