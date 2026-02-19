@@ -1,36 +1,32 @@
 import React, { useEffect, useState, useRef } from 'react';
+import dataSources from '../../data/atiokb_data_sources.json';
 
 const DataSources = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [sources, setSources] = useState([]);
   const [error, setError] = useState(null);
-  const abortControllerRef = useRef(null);
 
   useEffect(() => {
     if (!open) return;
 
-    abortControllerRef.current = new AbortController();
+    setLoading(true);
+    setError(null);
 
-    fetch('http://localhost:8000/data/sources', { signal: abortControllerRef.current.signal })
-      .then((res) => {
-        if (!res.ok) throw new Error('Network response was not ok');
-        return res.json();
-      })
-      .then((data) => {
-        setSources(data.sources || []);
-        setLoading(false);
-        setError(null);
-      })
-      .catch((err) => {
-        if (err.name !== 'AbortError') {
-          setError(err.message);
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      abortControllerRef.current?.abort();
-    };
+    try {
+      // Normalize the data
+      const normalized = dataSources.map((item) => ({
+        id: item.nid || item.id || null,
+        title: item.title || "",
+        summary: (item.body || "").trim(),
+        use_cases: item.field_use_cases_description || item.use_cases || ""
+      }));
+      
+      setSources(normalized);
+      setLoading(false);
+    } catch (err) {
+      setError("Failed to load data sources");
+      setLoading(false);
+    }
   }, [open]);
 
   if (!open) return null;
