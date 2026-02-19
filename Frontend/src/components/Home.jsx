@@ -24,7 +24,7 @@ const ROLES = [
     title: 'Researchers',
     description: 'Identify research gaps and evaluate innovation scalability.',
     icon: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.694.347a2 2 0 01-1.783 0l-.694-.347a6 6 0 00-3.86-.517l-2.387.477a2 2 0 00-1.022.547l-1.39 1.39a2 2 0 00-.45 2.135 11 11 0 0019.101 0 2 2 0 00-.45-2.135l-1.39-1.39z',
-    imageUrl: 'https://images.unsplash.com/photo-1532187863486-abf9d39d99c5?auto=format&fit=crop&q=80&w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200',
     color: 'bg-purple-600',
     active: true
   },
@@ -69,7 +69,7 @@ const ROLES = [
     title: 'Data Providers',
     description: 'Connect your database to the knowledge base.',
     icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
-    imageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800',
+    imageUrl: 'https://images.unsplash.com/photo-1555949963-aa79dcee981d?auto=format&fit=crop&q=80&w=1200',
     color: 'bg-indigo-600',
     active: true
   }
@@ -92,24 +92,24 @@ const Home = ({ onSelectRole }) => {
         {ROLES.map((role) => (
           <div 
             key={role.id}
-            className="bg-white rounded-[40px] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full group"
+            className="glass-card rounded-[40px] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 flex flex-col h-full group"
           >
             {/* Image Header */}
-            <div className="relative h-52 w-full overflow-hidden">
+            <div className="relative h-52 w-full overflow-hidden persona-image">
               <img src={role.imageUrl} alt={role.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-black/40" />
               
               {/* Active Badge */}
               {role.active && (
-                <div className="absolute top-5 right-5 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full flex items-center gap-2 shadow-sm">
+                <div className="absolute top-5 right-5 bg-white/85 backdrop-blur-sm px-4 py-1.5 rounded-full flex items-center gap-2 shadow-sm">
                    <div className="w-1.5 h-1.5 rounded-full bg-[#008D96] animate-pulse" />
                    <span className="text-[10px] font-bold text-gray-800 uppercase tracking-[1px]">Active</span>
                 </div>
               )}
 
               {/* Circular Icon */}
-              <div className="absolute -bottom-7 left-8 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10">
-                <div className={`w-12 h-12 rounded-full ${role.color} flex items-center justify-center text-white`}>
+              <div className="absolute -bottom-8 left-8 w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10 persona-icon">
+                <div className={`w-12 h-12 rounded-full ${role.color} flex items-center justify-center text-white`}> 
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={role.icon} />
                   </svg>
@@ -118,9 +118,9 @@ const Home = ({ onSelectRole }) => {
             </div>
 
             {/* Content */}
-            <div className="p-8 pt-12 flex flex-col flex-1">
+            <div className="p-8 pt-20 flex flex-col flex-1 relative">
               <h3 className="text-2xl font-bold text-gray-900 mb-3">{role.title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-8 flex-1 font-medium">{role.description}</p>
+              <p className="text-sm text-gray-500 leading-relaxed mb-8 flex-1 font-medium mt-2">{role.description}</p>
               <button 
                 onClick={() => onSelectRole(role.id)}
                 className="w-full bg-gray-950 text-white font-bold py-4 rounded-2xl hover:bg-[#008D96] transition-colors text-sm shadow-lg active:scale-95 duration-200"

@@ -40,3 +40,45 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Glass / liquid-card styles for persona cards */
+.glass-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(240,255,240,0.45));
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(255,255,255,0.6);
+  transition: transform 300ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms;
+}
+
+.glass-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(2,6,23,0.12);
+}
+
+.glass-card .persona-image img {
+  transition: transform 700ms ease;
+}
+
+.glass-card .persona-icon {
+  transition: transform 350ms ease, box-shadow 350ms ease;
+}
+.glass-card:hover .persona-icon {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0,141,150,0.18);
+}
+
+/* subtle liquid sheen animation */
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(1200px 300px at -10% 10%, rgba(255,255,255,0.18), transparent 20%),
+              linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.06));
+  mix-blend-mode: overlay;
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-card, .glass-card .persona-image img, .glass-card .persona-icon { transition: none !important; transform: none !important; }
+}
