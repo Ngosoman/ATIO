@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ResearcherDashboard = ({ onBack }) => {
+  const [selectedEvidenceLevel, setSelectedEvidenceLevel] = useState([]);
+  const [selectedSDGs, setSelectedSDGs] = useState([]);
+  const [selectedRegions, setSelectedRegions] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleEvidenceToggle = (level) => {
+    setSelectedEvidenceLevel(prev =>
+      prev.includes(level) ? prev.filter(l => l !== level) : [...prev, level]
+    );
+  };
+
+  const handleSDGToggle = (sdg) => {
+    setSelectedSDGs(prev =>
+      prev.includes(sdg) ? prev.filter(s => s !== sdg) : [...prev, sdg]
+    );
+  };
+
+  const handleRegionToggle = (region) => {
+    setSelectedRegions(prev =>
+      prev.includes(region) ? prev.filter(r => r !== region) : [...prev, region]
+    );
+  };
+
   const innovations = [
     {
       id: 1,
@@ -33,6 +56,23 @@ const ResearcherDashboard = ({ onBack }) => {
       institutions: ['Bioversity International', 'PELUM', 'University of Nairobi']
     }
   ];
+
+  // Filter innovations based on selected criteria
+  const filteredInnovations = innovations.filter(inn => {
+    const matchesSearch = inn.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         inn.description.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesEvidence = selectedEvidenceLevel.length === 0 || 
+                           selectedEvidenceLevel.includes(inn.evidenceLevel);
+    
+    const matchesSDG = selectedSDGs.length === 0 || 
+                      selectedSDGs.some(sdg => inn.sdgs.includes(sdg));
+    
+    const matchesRegion = selectedRegions.length === 0 || 
+                         selectedRegions.some(r => inn.regions.includes(r));
+    
+    return matchesSearch && matchesEvidence && matchesSDG && matchesRegion;
+  });
 
   const sdgColors = {
     2: 'bg-[#F29100]',
@@ -105,7 +145,12 @@ const ResearcherDashboard = ({ onBack }) => {
                 <div className="space-y-2">
                   {['Very Strong', 'Strong', 'Moderate', 'Emerging'].map(e => (
                     <label key={e} className="flex items-center gap-3 cursor-pointer group">
-                      <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                      <input 
+                        type="checkbox" 
+                        checked={selectedEvidenceLevel.includes(e)}
+                        onChange={() => handleEvidenceToggle(e)}
+                        className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500 cursor-pointer" 
+                      />
                       <span className="text-sm font-medium text-gray-600 group-hover:text-purple-600 transition-colors">{e}</span>
                     </label>
                   ))}
@@ -113,36 +158,39 @@ const ResearcherDashboard = ({ onBack }) => {
               </div>
 
               <div className="border-t border-gray-100 pt-6">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Publication Year</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Geographic Region</h3>
                 <div className="space-y-2">
-                  {['2024', '2023', '2022', '2021', '2020 and earlier'].map(y => (
-                    <label key={y} className="flex items-center gap-3 cursor-pointer group">
-                      <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
-                      <span className="text-sm font-medium text-gray-600 group-hover:text-purple-600">{y}</span>
+                  {['East Africa', 'West Africa', 'Southern Africa', 'Sub-Saharan Africa'].map(r => (
+                    <label key={r} className="flex items-center gap-3 cursor-pointer group">
+                      <input 
+                        type="checkbox" 
+                        checked={selectedRegions.includes(r)}
+                        onChange={() => handleRegionToggle(r)}
+                        className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500 cursor-pointer" 
+                      />
+                      <span className="text-sm font-medium text-gray-600 group-hover:text-purple-600 transition-colors">{r}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
               <div className="border-t border-gray-100 pt-6">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Research Institution</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">SDG Alignment</h3>
                 <div className="space-y-2">
-                  {['ICRAF', 'FAO', 'Bioversity International', 'Wageningen University', 'CGIAR'].map(i => (
-                    <label key={i} className="flex items-center gap-3 cursor-pointer group">
-                      <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
-                      <span className="text-sm font-medium text-gray-600 group-hover:text-purple-600">{i}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div className="border-t border-gray-100 pt-6">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Citation Count</h3>
-                <div className="space-y-2">
-                  {['100+', '50-100', '20-50', 'Under 20'].map(c => (
-                    <label key={c} className="flex items-center gap-3 cursor-pointer group">
-                      <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
-                      <span className="text-sm font-medium text-gray-600 group-hover:text-purple-600">{c}</span>
+                  {[
+                    { id: 2, label: 'Zero Hunger' },
+                    { id: 6, label: 'Clean Water' },
+                    { id: 13, label: 'Climate Action' },
+                    { id: 15, label: 'Life on Land' }
+                  ].map(sdg => (
+                    <label key={sdg.id} className="flex items-center gap-3 cursor-pointer group">
+                      <input 
+                        type="checkbox" 
+                        checked={selectedSDGs.includes(sdg.id)}
+                        onChange={() => handleSDGToggle(sdg.id)}
+                        className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500 cursor-pointer" 
+                      />
+                      <span className="text-sm font-medium text-gray-600 group-hover:text-purple-600 transition-colors">{sdg.label}</span>
                     </label>
                   ))}
                 </div>
@@ -181,6 +229,8 @@ const ResearcherDashboard = ({ onBack }) => {
             </div>
             <input 
               type="text" 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by innovation name, use case, research institution, or challenge..."
               className="w-full bg-white border-2 border-purple-100 rounded-2xl py-4 pl-14 pr-6 shadow-sm focus:ring-2 focus:ring-purple-400 focus:border-purple-300 outline-none text-sm font-medium transition-all"
             />
@@ -189,7 +239,7 @@ const ResearcherDashboard = ({ onBack }) => {
           {/* Action Buttons */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex gap-4">
-              <button className="bg-gray-900 text-white px-6 py-2.5 rounded-2xl text-sm font-bold shadow-lg">All Results (3)</button>
+              <button className="bg-gray-900 text-white px-6 py-2.5 rounded-2xl text-sm font-bold shadow-lg">All Results ({filteredInnovations.length})</button>
               <button className="bg-white text-gray-400 px-6 py-2.5 rounded-2xl text-sm font-bold border border-gray-50 hover:bg-gray-50">Saved (0)</button>
             </div>
             <div className="flex gap-3">
@@ -210,7 +260,7 @@ const ResearcherDashboard = ({ onBack }) => {
 
           {/* Research-Focused Innovation Cards */}
           <div className="space-y-8">
-            {innovations.map(inn => (
+            {filteredInnovations.map(inn => (
               <div key={inn.id} className="bg-white rounded-[32px] p-8 border-2 border-purple-50 shadow-sm hover:shadow-xl hover:border-purple-100 transition-all relative overflow-hidden">
                 {/* Evidence Level Badge */}
                 <div className="absolute top-6 right-6 flex items-center gap-2">

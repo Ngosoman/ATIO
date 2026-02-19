@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const PolicymakerDashboard = ({ onBack }) => {
+  const [selectedRegions, setSelectedRegions] = useState([]);
+  const [selectedSDGs, setSelectedSDGs] = useState([]);
+  const [selectedReadiness, setSelectedReadiness] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleRegionToggle = (region) => {
+    setSelectedRegions(prev =>
+      prev.includes(region) ? prev.filter(r => r !== region) : [...prev, region]
+    );
+  };
+
+  const handleSDGToggle = (sdg) => {
+    setSelectedSDGs(prev =>
+      prev.includes(sdg) ? prev.filter(s => s !== sdg) : [...prev, sdg]
+    );
+  };
+
+  const handleReadinessToggle = (readiness) => {
+    setSelectedReadiness(prev =>
+      prev.includes(readiness) ? prev.filter(r => r !== readiness) : [...prev, readiness]
+    );
+  };
+
   const innovations = [
     {
       id: 1,
@@ -43,6 +66,28 @@ const PolicymakerDashboard = ({ onBack }) => {
       policyFit: 'Very Strong'
     }
   ];
+
+  // Filter innovations based on selected criteria
+  const filteredInnovations = innovations.filter(inn => {
+    const matchesSearch = inn.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         inn.description.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesRegion = selectedRegions.length === 0 || 
+                         selectedRegions.some(r => inn.regions.includes(r));
+    
+    const matchesSDG = selectedSDGs.length === 0 || 
+                      inn.sdgs.some(sdg => selectedSDGs.includes(sdg.label));
+    
+    const matchesReadiness = selectedReadiness.length === 0 || 
+                            selectedReadiness.some(r => {
+                              if (r === 'Scale-up Ready (8-9)') return parseInt(inn.readiness) >= 8;
+                              if (r === 'Pilot Tested (5-7)') return parseInt(inn.readiness) >= 5 && parseInt(inn.readiness) < 8;
+                              if (r === 'Early Stage (1-4)') return parseInt(inn.readiness) < 5;
+                              return false;
+                            });
+    
+    return matchesSearch && matchesRegion && matchesSDG && matchesReadiness;
+  });
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-amber-50/50 via-white to-orange-50/30">
@@ -108,7 +153,12 @@ const PolicymakerDashboard = ({ onBack }) => {
                 <div className="space-y-2">
                   {['East Africa', 'West Africa', 'Southern Africa', 'Central Africa', 'Sub-Saharan Africa'].map(r => (
                     <label key={r} className="flex items-center gap-3 cursor-pointer group">
-                      <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                      <input 
+                        type="checkbox" 
+                        checked={selectedRegions.includes(r)}
+                        onChange={() => handleRegionToggle(r)}
+                        className="w-4 h-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500 cursor-pointer" 
+                      />
                       <span className="text-sm font-medium text-gray-600 group-hover:text-amber-600 transition-colors">{r}</span>
                     </label>
                   ))}
@@ -122,10 +172,16 @@ const PolicymakerDashboard = ({ onBack }) => {
                     { label: 'Zero Hunger', color: '#F29100' },
                     { label: 'Clean Water', color: '#00ADEF' },
                     { label: 'Climate Action', color: '#3F7E44' },
-                    { label: 'No Poverty', color: '#E5243B' }
+                    { label: 'No Poverty', color: '#E5243B' },
+                    { label: 'Life on Land', color: '#56C02B' }
                   ].map(sdg => (
                     <label key={sdg.label} className="flex items-center gap-3 cursor-pointer group">
-                      <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                      <input 
+                        type="checkbox" 
+                        checked={selectedSDGs.includes(sdg.label)}
+                        onChange={() => handleSDGToggle(sdg.label)}
+                        className="w-4 h-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500 cursor-pointer" 
+                      />
                       <span className="flex items-center gap-2 text-sm font-medium text-gray-600 group-hover:text-amber-600">
                         <span className="w-3 h-3 rounded-full" style={{ backgroundColor: sdg.color }}></span>
                         {sdg.label}
@@ -140,7 +196,12 @@ const PolicymakerDashboard = ({ onBack }) => {
                 <div className="space-y-2">
                   {['Scale-up Ready (8-9)', 'Pilot Tested (5-7)', 'Early Stage (1-4)'].map(r => (
                     <label key={r} className="flex items-center gap-3 cursor-pointer group">
-                      <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                      <input 
+                        type="checkbox" 
+                        checked={selectedReadiness.includes(r)}
+                        onChange={() => handleReadinessToggle(r)}
+                        className="w-4 h-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500 cursor-pointer" 
+                      />
                       <span className="text-sm font-medium text-gray-600 group-hover:text-amber-600">{r}</span>
                     </label>
                   ))}
@@ -192,13 +253,15 @@ const PolicymakerDashboard = ({ onBack }) => {
             </div>
             <input 
               type="text" 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search innovations by policy impact, region, or SDG..."
               className="w-full bg-white border-2 border-amber-100 rounded-2xl py-4 pl-14 pr-6 shadow-sm focus:ring-2 focus:ring-amber-400 focus:border-amber-300 outline-none text-sm font-medium transition-all"
             />
           </div>
 
           <div className="flex items-center justify-between mb-6">
-            <p className="text-sm font-bold text-gray-500">3 innovations found matching your criteria</p>
+            <p className="text-sm font-bold text-gray-500">{filteredInnovations.length} innovations found matching your criteria</p>
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-500 font-medium">Sort by:</span>
               <select className="bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-amber-400">
@@ -211,7 +274,7 @@ const PolicymakerDashboard = ({ onBack }) => {
 
           {/* Policy-Focused Innovation Cards */}
           <div className="space-y-6">
-            {innovations.map(inn => (
+            {filteredInnovations.map(inn => (
               <div key={inn.id} className="bg-white rounded-[32px] p-8 border-2 border-amber-50 shadow-sm hover:shadow-xl hover:border-amber-100 transition-all relative overflow-hidden">
                 {/* Policy Fit Badge */}
                 <div className="absolute top-6 right-6 flex items-center gap-2">
