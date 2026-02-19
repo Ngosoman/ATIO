@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import dataSources from '../../../data/atiokb_data_sources.json';
+import dataSources from '../../../Folder/data/atiokb_data_sources.json';
 
 const DataSources = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ const DataSources = ({ open, onClose }) => {
         summary: (item.body || "").trim(),
         use_cases: item.field_use_cases_description || item.use_cases || ""
       }));
-      
+
       setSources(normalized);
       setLoading(false);
       setError(null);
@@ -46,7 +46,7 @@ const DataSources = ({ open, onClose }) => {
           {sources.map((s) => (
             <div key={s.id || s.title} className="p-4 border rounded-lg bg-gray-50">
               <h3 className="font-bold text-sm mb-2">{s.title}</h3>
-              <p className="text-xs text-gray-600 mb-2">{s.summary && s.summary.length > 300 ? s.summary.substring(0,300) + '...' : s.summary}</p>
+              <p className="text-xs text-gray-600 mb-2">{s.summary && s.summary.length > 300 ? s.summary.substring(0, 300) + '...' : s.summary}</p>
               {s.use_cases && <p className="text-xs text-green-700 font-medium">Use cases: {s.use_cases}</p>}
             </div>
           ))}
