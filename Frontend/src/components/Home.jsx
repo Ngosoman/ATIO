@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DataSources from './DataSources.jsx';
 
 const ROLES = [
   {
@@ -76,6 +77,8 @@ const ROLES = [
 ];
 
 const Home = ({ onSelectRole }) => {
+  const [showDataSources, setShowDataSources] = useState(false);
+
   return (
     <div className="max-w-7xl mx-auto px-6 pt-12 pb-32">
       {/* Hero Section */}
@@ -147,12 +150,13 @@ const Home = ({ onSelectRole }) => {
             <button className="bg-gray-50 border border-gray-100 py-4 px-8 rounded-2xl font-bold text-gray-700 hover:bg-[#008D96] hover:text-white transition-all flex items-center justify-center gap-3">
               📊 Data Integration Demo
             </button>
-            <button className="bg-gray-50 border border-gray-100 py-4 px-8 rounded-2xl font-bold text-gray-700 hover:bg-[#008D96] hover:text-white transition-all flex items-center justify-center gap-3">
+            <button onClick={() => setShowDataSources(true)} className="bg-gray-50 border border-gray-100 py-4 px-8 rounded-2xl font-bold text-gray-700 hover:bg-[#008D96] hover:text-white transition-all flex items-center justify-center gap-3">
               📁 Browse Data Sources
             </button>
           </div>
         </div>
       </div>
+      <DataSources open={showDataSources} onClose={() => setShowDataSources(false)} />
     </div>
   );
 };
