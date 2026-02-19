@@ -70,7 +70,7 @@ const ROLES = [
     title: 'Data Providers',
     description: 'Connect your database to the knowledge base.',
     icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
-    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200',
+    imageUrl: 'https://images.unsplash.com/photo-1555949963-aa79dcee981d?auto=format&fit=crop&q=80&w=1200',
     color: 'bg-indigo-600',
     active: true
   }
@@ -80,19 +80,7 @@ const Home = ({ onSelectRole }) => {
   const [showDataSources, setShowDataSources] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Header with Logo */}
-      <header className="sticky top-0 z-40 bg-white border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-700 rounded-lg flex items-center justify-center text-white text-lg font-bold shadow-md">
-            🌿
-          </div>
-          <span className="text-2xl font-black text-green-700 tracking-tight">ATIO</span>
-          <span className="text-xs text-gray-500 ml-auto">Knowledge Base</span>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-6 pt-12 pb-32">
+    <div className="max-w-7xl mx-auto px-6 pt-12 pb-32">
       {/* Hero Section */}
       <div className="text-center mb-16 animate-fade-in">
         <h2 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Welcome to the ATIO Knowledge Base</h2>
@@ -169,7 +157,6 @@ const Home = ({ onSelectRole }) => {
         </div>
       </div>
       <DataSources open={showDataSources} onClose={() => setShowDataSources(false)} />
-      </div>
     </div>
   );
 };
