@@ -4,8 +4,8 @@
 // import { FarmerDashboard } from '../pages/FarmerDashboard.jsx';
 // import { ResearcherDashboard } from '../pages/ResearcherDashboard.jsx';
 // import { PolicymakerDashboard } from '../pages/PolicymakerDashboard.jsx';
-// import { FloatingChat } from './components/chatbot/FloatingChat.jsx';
-// import { VoiceReadButton } from './components/chatbot/VoiceReadButton.jsx';
+// import { FloatingChat } from './components/FloatingChat.jsx';
+// import { VoiceReadButton } from './components/VoiceReadButton.jsx';
 
 // const App = () => {
 //   const [persona, setPersona] = useState(Persona.GUEST);
@@ -115,7 +115,7 @@ import AIAssistant from './components/AssistantAI.jsx';
 import PolicymakerDashboard from '../pages/PolicymakerDashboard.jsx';
 import FarmerDashboard from '../pages/FarmerDashboard.jsx';
 import ResearcherDashboard from '../pages/ResearcherDashboard.jsx';
-import { VoiceReadButton } from './components/chatbot/VoiceReadButton.jsx';
+import { VoiceReadButton } from './components/VoiceReadButton.jsx';
 
 const App = () => {
   const [showAI, setShowAI] = useState(false);
