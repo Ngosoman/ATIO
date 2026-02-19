@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { extractPageContent } from '../../utils/contentExtractor.js';
-import { ttsService } from '../../utils/textToSpeech.js';
+import { extractPageContent } from '../utils/contentExtractor.js';
+import { ttsService } from '../utils/textToSpeech.js';
 import { Volume2, VolumeX, AlertCircle, Play, Pause, Loader2 } from 'lucide-react';
 
 export const VoiceReadButton = () => {
