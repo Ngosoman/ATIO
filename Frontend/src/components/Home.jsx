@@ -111,7 +111,7 @@ const Home = ({ onSelectRole }) => {
               )}
 
               {/* Circular Icon */}
-              <div className="absolute -bottom-8 left-8 w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10 persona-icon">
+              <div className="absolute bottom-5 left-8 w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-xl border-4 border-white z-10 persona-icon">
                 <div className={`w-12 h-12 rounded-full ${role.color} flex items-center justify-center text-white`}> 
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={role.icon} />
