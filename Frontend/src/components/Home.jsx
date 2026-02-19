@@ -70,7 +70,7 @@ const ROLES = [
     title: 'Data Providers',
     description: 'Connect your database to the knowledge base.',
     icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
-    imageUrl: 'https://images.unsplash.com/photo-1555949963-aa79dcee981d?auto=format&fit=crop&q=80&w=1200',
+    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200',
     color: 'bg-indigo-600',
     active: true
   }
@@ -147,9 +147,9 @@ const Home = ({ onSelectRole }) => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-5 justify-center">
-            <button className="bg-gray-50 border border-gray-100 py-4 px-8 rounded-2xl font-bold text-gray-700 hover:bg-[#008D96] hover:text-white transition-all flex items-center justify-center gap-3">
+            {/* <button className="bg-gray-50 border border-gray-100 py-4 px-8 rounded-2xl font-bold text-gray-700 hover:bg-[#008D96] hover:text-white transition-all flex items-center justify-center gap-3">
               📊 Data Integration Demo
-            </button>
+            </button> */}
             <button onClick={() => setShowDataSources(true)} className="bg-gray-50 border border-gray-100 py-4 px-8 rounded-2xl font-bold text-gray-700 hover:bg-[#008D96] hover:text-white transition-all flex items-center justify-center gap-3">
               📁 Browse Data Sources
             </button>
