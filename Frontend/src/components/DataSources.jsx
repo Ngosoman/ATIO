@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import dataSources from '../../data/atiokb_data_sources.json';
+import dataSources from '../../../data/atiokb_data_sources.json';
 
 const DataSources = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false);
