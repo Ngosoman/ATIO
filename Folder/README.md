@@ -40,6 +40,9 @@ pip install -r requirements.txt
 
 # Start the high-performance server
 python main.py
+
+#RUN The Frontend using:
+npm run dev
 ```
 
 ### 2. Enter the Interface
