@@ -13,8 +13,6 @@
   <img src="https://img.shields.io/badge/ATIO%20Food%20Systems-Decision%20Intelligence-8BC34A?style=for-the-badge"/>
 </p>
 
-🔗 **Live Website:**  
-https://srilanka-one.vercel.app/
 ---
 
 ## 🌍 Project Overview
@@ -25,6 +23,9 @@ The platform transforms fragmented food systems knowledge into **clear, explaina
 
 - 🌾 Food and Agriculture Organization (FAO)
 - 🌱 Agrifood Systems Technologies & Innovations Outlook (ATIO)
+
+🔗 **Live Website:**  
+https://atio-zeta.vercel.app/
 
 ---
 
