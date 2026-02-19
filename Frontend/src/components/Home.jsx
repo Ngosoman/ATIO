@@ -169,6 +169,7 @@ const Home = ({ onSelectRole }) => {
         </div>
       </div>
       <DataSources open={showDataSources} onClose={() => setShowDataSources(false)} />
+      </div>
     </div>
   );
 };
