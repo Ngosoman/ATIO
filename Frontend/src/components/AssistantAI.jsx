@@ -59,21 +59,20 @@ const AIAssistant = () => {
           <p className="text-[10px] text-white/70 uppercase tracking-widest">Knowledge Assistant</p>
         </div>
         <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
-           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
         {messages.map((msg, i) => (
-          <div 
-            key={i} 
+          <div
+            key={i}
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <div className={`max-w-[85%] p-3 rounded-2xl text-sm ${
-              msg.role === 'user' 
-              ? 'bg-fao-teal text-white shadow-md' 
-              : 'bg-white border border-gray-200 text-gray-700 shadow-sm'
-            }`}>
+            <div className={`max-w-[85%] p-3 rounded-2xl text-sm ${msg.role === 'user'
+              ? 'bg-fao-teal text-white shadow-md'
+              : 'bg-white border border-gray-200 text-black shadow-sm'
+              }`}>
               {msg.content}
             </div>
           </div>
