@@ -10,8 +10,6 @@ const DataSources = ({ open, onClose }) => {
     if (!open) return;
 
     abortControllerRef.current = new AbortController();
-    setLoading(true);
-    setError(null);
 
     fetch('http://localhost:8000/data/sources', { signal: abortControllerRef.current.signal })
       .then((res) => {
@@ -21,6 +19,7 @@ const DataSources = ({ open, onClose }) => {
       .then((data) => {
         setSources(data.sources || []);
         setLoading(false);
+        setError(null);
       })
       .catch((err) => {
         if (err.name !== 'AbortError') {
