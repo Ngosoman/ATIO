@@ -1,190 +1,149 @@
-🌱 ATIO Food Systems Decision Intelligence Platform
+<!-- ================= HEADER ================= -->
 
-A React-based web application built for the ATIO Hackathon, designed to support data-driven, inclusive decision-making in food systems through persona-based dashboards and an AI-powered chatbot.
+<h1 align="center">🌱 ATIO Food Systems Decision Intelligence Platform</h1>
 
-🚀 Project Overview
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&weight=600&size=24&duration=3000&pause=1000&center=true&vCenter=true&width=800&lines=AI-Assisted+Food+Systems+Decision+Platform;Persona-Based+Dashboards+%7C+React+Frontend;Built+for+ATIO+Hackathon;Turning+Food+Data+Into+Actionable+Intelligence" />
+</p>
 
-The ATIO Food Systems Decision Intelligence Platform enables stakeholders in the agrifood ecosystem to access insights, explore data, and make informed decisions even in contexts where data is incomplete or fragmented.
+<p align="center">
+  <img src="https://img.shields.io/badge/Hackathon-ATIO-4CAF50?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react"/>
+  <img src="https://img.shields.io/badge/AI-Gemini-FF9800?style=for-the-badge&logo=openai"/>
+  <img src="https://img.shields.io/badge/ATIO%20Food%20Systems-Decision%20Intelligence-8BC34A?style=for-the-badge"/>
+</p>
 
-The platform aligns with the objectives of the Food and Agriculture Organization (FAO) and the Agrifood Systems Technologies and Innovations Outlook (ATIO) by transforming food systems knowledge into actionable, explainable outcomes.
+---
 
-🎯 Key Objectives
+## 🌍 Project Overview
 
-Support evidence-based decision-making
+**ATIO Food Systems Decision Intelligence Platform** is a React-based web application developed for the **ATIO Hackathon**, enabling inclusive and data-driven decision-making within agrifood ecosystems.
 
-Enable persona-specific experiences
+The platform transforms fragmented food systems knowledge into **clear, explainable, and actionable intelligence**, aligned with:
 
-Promote inclusive and grassroots-friendly innovation
+- 🌾 Food and Agriculture Organization (FAO)
+- 🌱 Agrifood Systems Technologies & Innovations Outlook (ATIO)
 
-Provide AI-assisted insights through a chatbot interface
+🔗 **Live Website:**  
+https://atio-zeta.vercel.app/
 
-Demonstrate a scalable and modular frontend architecture
+---
 
-👥 Supported User Personas
-👩🏽‍🌾 Farmer
+## 🎯 Key Objectives
 
-Simplified insights
+✔ Evidence-based decision support  
+✔ Persona-driven dashboards  
+✔ Inclusive & grassroots-friendly design  
+✔ AI-assisted insight generation  
+✔ Scalable modular architecture  
 
-Visual and practical recommendations
+---
 
-Climate and productivity guidance
+## 👥 Supported User Personas
 
-📊 Researcher
+| Persona | Purpose |
+|---|---|
+| 👩🏽‍🌾 **Farmer** | Practical insights, climate guidance, productivity support |
+| 📊 **Researcher** | Data exploration, comparison, structured analysis |
+| 🏛 **Policymaker** | Policy summaries, indicators, evidence briefs |
 
-Data exploration and comparison
+> Each persona receives a customized dashboard tailored to their needs.
 
-Indicator-focused views
+---
 
-Structured datasets
+## 🧠 Core Features
 
-🏛 Policymaker
+- ⚛️ React JSX Frontend  
+- 🎭 Persona-based dashboards  
+- 📊 FAO-aligned datasets (JSON / CSV)  
+- 🤖 AI Chatbot (RAG-ready architecture)  
+- 🌱 Agriculture-friendly UI  
+- 🧩 Modular scalable components  
 
-Policy-relevant summaries
+---
 
-Evidence briefs
+## 🤖 AI Chatbot Integration
 
-High-level system indicators
+The platform includes a **floating AI assistant** enabling users to ask food-systems-related questions.
 
-Each persona receives a customized dashboard tailored to their decision needs.
+### 💡 Capabilities
 
-🧠 Core Features
+- Context-aware responses  
+- Retrieval-ready (RAG integration)  
+- Non-technical user friendly  
+- Decision-focused exploration  
 
-⚛️ React JSX Frontend
+> ⚠️ Frontend consumes chatbot API — AI reasoning handled by backend.
 
-🎭 Persona-based dashboards
+---
 
-📊 FAO-aligned food systems datasets (JSON/CSV)
+## 🎨 UI & Design Philosophy
 
-🤖 AI-powered chatbot (RAG-ready integration)
+🌿 Nature-inspired color palette  
+♿ WCAG-conscious accessibility  
+📱 Mobile responsive design  
+🧠 Low cognitive load, visual-first UI  
 
-🌱 Agriculture-friendly, accessible UI design
+> **Simple enough for farmers, powerful enough for policymakers.**
 
-🧩 Modular and scalable component architecture
+---
 
-🤖 AI Chatbot Integration
+# 🛠️ Technologies Used
 
-The platform includes a floating chatbot widget that allows users to ask food systems–related questions.
+<p align="center">
 
-Chatbot Capabilities:
+### Frontend
+<img src="https://skillicons.dev/icons?i=react,js,html,css,tailwind" />
 
-Context-aware responses
+### Backend / API Integration
+<img src="https://skillicons.dev/icons?i=nodejs,python" />
 
-Integration-ready for RAG pipelines
+### Tools & Development
+<img src="https://skillicons.dev/icons?i=git,github,vscode,npm" />
 
-Designed for non-technical users
+</p>
 
-Supports exploratory and decision-focused queries
+---
 
-⚠️ The frontend consumes the chatbot API; AI reasoning and retrieval logic are handled on the backend.
+## ⚙️ Tech Stack
 
-🎨 UI & Design Principles
+| Layer | Technology |
+|---|---|
+| Frontend | React (JSX) |
+| Styling | CSS / Tailwind |
+| State Management | React Hooks & Context |
+| Data Handling | JSON / CSV |
+| AI Integration | REST Chatbot API |
 
-Nature-inspired, agricultural-friendly color palette
+---
 
-WCAG-conscious contrast and accessibility
+## 🚀 Getting Started
 
-Mobile-responsive layout
+### 1️⃣ Prerequisites
 
-Visual-first presentation for low cognitive load
+- Node.js (v18+ recommended)
+- npm / yarn
+- Git
 
-Design Philosophy:
+### 2️⃣ Clone Repository
 
-Simple enough for farmers, powerful enough for policymakers.
-
-🛠️ Tech Stack
-
-Frontend: React (JSX)
-
-Styling: CSS / Tailwind
-
-State Management: React Hooks & Context
-
-Data Handling: JSON / CSV
-
-AI Integration: REST-based chatbot API
-
-▶️ Getting Started (Run Instructions)
-1️⃣ Prerequisites
-
-Make sure you have installed:
-
-Node.js (v18 or later recommended)
-
-npm or yarn
-
-Git
-
-Check versions:
-
-node -v
-npm -v
-
-2️⃣ Clone the Repository
+```bash
 git clone https://github.com/Ngosoman/ATIO.git
 cd ATIO
+```
 
-3️⃣ Install Dependencies
+### 3️⃣ Install Dependencies
+
+Using npm:
+
+```bash
 npm install
-
-
-or
-
-yarn install
-
-4️⃣ Configure Environment Variables (If Required)
-
-If the chatbot or backend API requires environment variables:
-
-Create a .env file in the root directory:
-
-VITE_API_URL=http://localhost:5000
-
-
-Adjust based on backend configuration.
-
-5️⃣ Run the Development Server
+```
+### 4️⃣ Run Development Server
+```bash
 npm run dev
-
-
-or
-
-yarn dev
-
-
-The application will start locally, usually at:
-
-http://localhost:5173
-
-6️⃣ Build for Production
-npm run build
-
-
-To preview production build:
-
-npm run preview
-
-📌 Hackathon Scope & Limitations
-
-Prototype-level implementation
-
-Mocked or sample datasets where required
-
-Focus on clarity, usability, and explainability
-
-Designed for demo-readiness, not production deployment
-
-🤝 Team & Collaboration
-
-This project is developed collaboratively as part of the ATIO Hackathon, with clear separation of responsibilities across frontend, backend, AI, and impact roles.
-
-🌍 Impact Vision
-
-By bridging data, AI, and human-centered design, this platform demonstrates how food systems knowledge can be transformed into inclusive, actionable intelligence that supports sustainable agrifood transformation.
-
-📄 License
-
-This project is developed for educational and hackathon purposes.
-
-🏁 One-Liner
-
-A persona-aware, AI-assisted decision platform that turns food systems data into action.
+```
+### Check Versions
+```bash
+node -v
+npm -v
