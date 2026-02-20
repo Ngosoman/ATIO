@@ -33,7 +33,7 @@ The ATIO Assistant is built on a modern, high-performance stack:
 ### 1. Launch the Backend
 ```bash
 # Navigate to the Folder directory
-cd "Folder"
+cd "backend_chatbot"
 
 # Install dependencies if you haven't already
 pip install -r requirements.txt
